@@ -320,8 +320,12 @@
         public function execute_one ($object_class = null) {
         	$this->setLimit(1);
         	$execution_result = $this->execute($object_class, false);
-        	
-            return end($execution_result);
+        	if(count($execution_result) > 0){
+                $result = end($execution_result);
+                return $result;
+            }else{
+                return FALSE;
+            }
         }
         public function execute_single_value () {
         	

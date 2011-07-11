@@ -12,8 +12,11 @@
 				MagicCache::$use_apc = true;
 			} else {
 				MagicCache::$use_apc = false;
-				if (!is_dir(MagicCache::FILE_STORAGE_LOCATION)) {
-					mkdir(MagicCache::FILE_STORAGE_LOCATION);
+				if (!is_dir(DIR_TEMP . MagicCache::FILE_STORAGE_LOCATION)) {
+                    //echo "Dir: " . DIR_TEMP . MagicCache::FILE_STORAGE_LOCATION;
+					if(!mkdir(DIR_TEMP . MagicCache::FILE_STORAGE_LOCATION)){
+                        throw new MagicException("Cannot make cache directory in ".DIR_TEMP . MagicCache::FILE_STORAGE_LOCATION);
+                    }
 				}
 			}
 			MagicCache::$tc = new MagicCache();
@@ -92,7 +95,7 @@
 		{
 			$directory = MagicCache::FILE_STORAGE_LOCATION . APPNAME . "/";
 			if (!file_exists($directory)) {
-				if (!mkdir($directory, 0777, true)) {
+				if (!@mkdir($directory, 0777, true)) {
 					throw new MagicException("Cannot make directory: {$directory}");
 				} else {
 					chmod($directory, 0777);

@@ -88,7 +88,22 @@ class MagicApplicationConfiguration extends MagicSingleton
         $oConfig->raw = $config;
         define("APPNAME", $oConfig->app_name);
         define("DIR_APP", ROOT . "application/" . APPNAME);
+        define("ROOT_APP", DIR_APP);
         define("DIR_TEMP", DIR_APP . "/temp");
+        define("DIR_GEN", DIR_APP . "/gen");
+
+        if(!file_exists(DIR_TEMP)){
+            if(!mkdir(DIR_TEMP, 0777, true)){
+                throw new exception("Wuhoh, there is no /temp directory at " . DIR_TEMP);
+            }
+        }
+
+        if(!file_exists(DIR_GEN)){
+            if(!mkdir(DIR_GEN, 0777, true)){
+                throw new exception("Wuhoh, there is no /gen directory at " . DIR_TEMP);
+            }
+        }
+
         return $oConfig;
     }
 }

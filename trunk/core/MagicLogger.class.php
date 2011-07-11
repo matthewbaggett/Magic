@@ -23,12 +23,15 @@ class MagicLogger
         $spaces = str_repeat(" ", (2 * MagicLogger::$cli_offset));
         $log_item = array('time' => time(), 'message' => $spaces . $Label . $Object);
         self::$log[] = $log_item;
+        error_log(MagicLogger::generate_log_line($log_item));
         if (PHP_SAPI == 'cli') {
             echo MagicLogger::generate_log_line($log_item) . "\n";
+            return false;
         } else {
 //            echo MagicLogger::generate_log_line($log_item) . "<br />\n";
             return fb::log($Object, $Label);
         }
+
     }
 
     static public function log_array(Array $array)

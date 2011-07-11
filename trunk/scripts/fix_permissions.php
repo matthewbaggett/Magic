@@ -40,6 +40,7 @@
 	foreach ($applications['Applications'] as $application_name) {
       recursiveChmod(ROOT . "/config", 0666, 0777);
 		recursiveChmod(sprintf(rtrim(ROOT,"/") . MagicObjectFactory::OBJECT_GENERATION_OUTPUT_DIR, $application_name), 0666, 0777);
+		mkdir(sprintf(rtrim(ROOT,"/") . "/application/%s/temp",$application_name));
 		recursiveChmod(sprintf(rtrim(ROOT,"/") . "/application/%s/temp/", $application_name), 0666, 0777);
       recursiveChmod(sprintf(rtrim(ROOT,"/") . "/application/%s/tests/", $application_name), 0666, 0777);
 	}
