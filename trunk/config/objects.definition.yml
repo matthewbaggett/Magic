@@ -1,0 +1,163 @@
+User:
+  id:
+    key: true
+    type: integer
+    length: 10
+  username:
+    type: text
+    length: 255
+    min-length: 3
+  password:
+    type: text
+    length: 40
+    min-length: 40
+  email:
+    #validator: email
+    type: email
+  salutation:
+    type: enum
+    enum:
+      Mr
+      Mrs
+      Miss
+      Ms
+      Dr
+      Lord
+      Lady
+  firstname:
+    type: text
+    length: 255
+  surname:
+    type: text
+    length: 255
+  nickname:
+    type: text
+    length: 255
+  date_of_birth:
+    type: timestamp
+  date_of_registration:
+    type: timestamp
+  level:
+    type: enum
+    enum:
+      basic
+      admin
+      superadmin
+  active:
+    type: enum
+    enum:
+      active
+      banned
+      unactive
+
+UserAccess:
+  id:
+    key: true
+    type: integer
+    length: 10 
+  user_id:
+    foreign: User.id
+  date_of_login:
+    type: timestamp
+  date_of_last_update:
+    type: timestamp
+
+UserActivity:
+  id:
+    key: true
+    type: integer
+    length: 10
+  user_id:
+    foreign: User.id
+  url:
+    type: text
+    length: -1
+  comment:
+    type: text
+    length: -1
+  timestamp:
+    type: timestamp
+
+UserPrivilege:
+  id:
+    key: true
+    type: integer
+    length: 10
+  user_id:
+    foreign: User.id
+  priviledge_id:
+    foreign: Priviledge.id
+
+Prividge:
+  id:
+    key: true
+    type: integer
+    length: 10
+  name:
+    type: text
+    length: 255
+    min-length: 3
+    
+Setting:
+  id:
+    key: true
+    type: integer
+    length: 10
+  system_name:
+    type: text
+    length: 255
+    min-length: 3
+  public_name:
+    type: text
+    length: 255
+    min-length: 3
+  default_value:
+    type: text
+    length: 1024
+  value:
+    type: text
+    length: 1024
+
+Mail:
+  id:
+    key: true
+    type: integer
+    length: 10
+  mail_instance_id:
+    type: uuid
+  sent:
+    type: enum
+    enum:
+      sent
+      unsent
+  to:
+    type: text
+    length: -1
+   serialize: true
+  from:
+    type: text
+    length: -1
+    serialize: true
+  subject:
+    type: text
+    length: -1
+  message:
+    type: text
+    length: -1
+  type:
+    type: enum
+    enum:
+      text
+      html
+  attachments:
+    type: text
+    length: -1
+    serialize: true
+  timestamp_queued:
+    type: timestamp
+  timestamp_sent:
+    type: timestamp
+  attempts:
+    type: integer
+    length: 5
+

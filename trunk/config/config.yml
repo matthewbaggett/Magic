@@ -1,0 +1,6 @@
+Core:
+  GenerateToAPC: false
+  ForceRegen: false
+  ErrorDisplay: true
+  DefaultTimezone: Europe/London
+  UseBeautifier: true
