@@ -31,7 +31,9 @@ class MagicApplication {
    public function __construct() {
       $this->time_startup = microtime(true);
       set_time_limit(90);
-      session_start(); 
+      if(PHP_SAPI != 'cli'){
+         session_start();
+      }
       $this->app_root = MagicApplicationConfiguration::Factory()->app_root;
       MagicPerformanceLog::mark("MagicApplication __construct()");
       MagicDB::$database = MagicDatabase::Factory()->boot(self::$config->database);
