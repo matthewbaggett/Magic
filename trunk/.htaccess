@@ -1,0 +1,12 @@
+order allow,deny
+deny from 109.200.20.153
+allow from all
+
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} -f [NC,OR]
+RewriteCond %{REQUEST_FILENAME} -d [NC]
+RewriteRule .* - [L]
+
+RewriteRule (.*)/(.*)/(.*)? ./index.php?controller=$1&method=$2&parameter=$3 [QSA,L]
+RewriteRule (.*)/(.*)? ./index.php?controller=$1&method=$2 [QSA,L]
