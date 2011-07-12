@@ -25,7 +25,7 @@ class MagicLogger
         self::$log[] = $log_item;
         error_log(MagicLogger::generate_log_line($log_item));
         if (PHP_SAPI == 'cli') {
-            echo "cli: " . MagicLogger::generate_log_line($log_item) . "\n";
+            //echo MagicLogger::generate_log_line($log_item) . "\n";
             return false;
         } else {
 //            echo MagicLogger::generate_log_line($log_item) . "<br />\n";
