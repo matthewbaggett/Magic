@@ -15,9 +15,13 @@
         MagicLogger::log("Cron complete");
     } else {
         require_once(dirname(__FILE__) . "/../core/MagicCore.php");
-        $applications = spyc::YAMLLoad(ROOT . MagicApplicationConfiguration::APPLICATION_DEFINITION_FILE);
-        print_r($applications['Applications']);
-        foreach ($applications['Applications'] as $application_name) {
+        //$applications = spyc::YAMLLoad(ROOT . MagicApplicationConfiguration::APPLICATION_DEFINITION_FILE);
+        $applications = MagicUtils::get_directory_list(ROOT. '/application');
+        array_walk($applications,function(&$item, $key){
+                $item = basename($item);
+            });
+        print_r($applications);
+        foreach ($applications as $application_name) {
             $run = "{$_SERVER['_']} {$_SERVER['PHP_SELF']} {$application_name}";
             echo "Running: $run\n\n";
             passthru($run);
