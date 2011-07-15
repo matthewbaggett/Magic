@@ -18,10 +18,6 @@
 // $Id:$
 
 
-/**
- * Controller generated June 21, 2011, 2:17:55 pm.
- */
-
 class UserCoreController extends UserBaseController {
 
    static public function loginAction(){

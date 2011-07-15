@@ -105,6 +105,11 @@ public function routing() {
    
    public function page_setup(){
       $this->page->layout = "index.tpl";
+
+      // Initiate Node.JS Backbone
+      $this->page->site->scripts[] = "http://north.cloud.turbocrms.com:19658/nowjs/now.js";
+      $this->page->site->scripts[] = "http://north.cloud.turbocrms.com:19659/corebar.js";
+
    }
    protected function setup() {
       MagicLogger::init();
