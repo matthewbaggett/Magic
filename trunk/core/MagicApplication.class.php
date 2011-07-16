@@ -107,8 +107,8 @@ public function routing() {
       //$this->page->layout = "index.tpl";
 
       // Initiate Node.JS Backbone
-      $this->page->site->scripts[] = "http://north.cloud.turbocrms.com:19658/nowjs/now.js";
-      $this->page->site->scripts[] = "http://north.cloud.turbocrms.com:19659/corebar.js";
+      $this->page->site->scripts[] = "http://core.turbocrms.com:19658/nowjs/now.js";
+      $this->page->site->scripts[] = "http://core.turbocrms.com:19659/corebar.js";
 
    }
    protected function setup() {
