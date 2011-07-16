@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<meta name="author" content="TurboCRMS (www.turbocrms.com" />
+<meta name="author" content="TurboCRMS (www.turbocrms.com)" />
 <meta name="Generator" content="Turbocrms 3.0 'Magic'">
 <meta name="robots" content="INDEX, FOLLOW" />
 <meta http-equiv="expires" content="0"/>
