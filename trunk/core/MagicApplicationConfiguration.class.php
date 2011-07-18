@@ -2,7 +2,6 @@
 class MagicApplicationConfiguration extends MagicSingleton
 {
     protected static $singleton = null;
-    const APPLICATION_DEFINITION_FILE = "/config/applications.yml";
 
     public $app_name;
     public $app_root;
@@ -32,9 +31,20 @@ class MagicApplicationConfiguration extends MagicSingleton
             $host = $_SERVER['HTTP_TURBOCRMS_SITE'];
         }
 
-        //Start to load the config
-        $applications = spyc::YAMLLoad(ROOT . MagicApplicationConfiguration::APPLICATION_DEFINITION_FILE);
-        foreach ($applications['Applications'] as $application_name) {
+        // Work out what configs we have
+        $applications = MagicUtils::get_directory_list(ROOT."/application");
+        foreach($applications as &$application){
+            $application_name = end(explode("/",$application));
+            if($application_name != 'Exception'){
+                $application = $application_name;
+            }else{
+                $application = '';
+            }
+        }
+        $applications = array_filter($applications);
+
+        //Decide which it is
+        foreach ($applications as $application_name) {
             $config = self::get_config($application_name);
             //Check that the application configuration file does exist
             $all_domains = array_merge((array)$config['Aliases'], (array)$config['Domain']);
