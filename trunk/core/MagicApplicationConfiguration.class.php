@@ -80,8 +80,6 @@ class MagicApplicationConfiguration extends MagicSingleton
         if (file_exists($application_config_file_specific)) {
             MagicLogger::log("Using specific config $application_config_file_specific rather than the default");
             $config = array_merge((array)$config, (array)spyc::YAMLLoad($application_config_file_specific));
-        } else {
-            MagicLogger::log("Cannot find specific config {$application_config_file_specific}. Using generic configuration file {$application_config_file_generic}");
         }
         return $config;
     }
@@ -90,7 +88,7 @@ class MagicApplicationConfiguration extends MagicSingleton
     {
         $oConfig = new MagicApplicationConfiguration();
         $oConfig->app_name = $config['AppName'];
-        $oConfig->domains = array_merge($config['Aliases'], (array)$config['Domain']);
+        $oConfig->domains = array_merge((array) $config['Aliases'], (array)$config['Domain']);
         $oConfig->web_root = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
         $oConfig->app_root = "{$oConfig->web_root}/application/{$oConfig->app_name}/resources/";
         $oConfig->database = new MagicDatabaseConfig();
