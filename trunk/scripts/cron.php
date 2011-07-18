@@ -16,11 +16,7 @@
     } else {
         require_once(dirname(__FILE__) . "/../core/MagicCore.php");
         //$applications = spyc::YAMLLoad(ROOT . MagicApplicationConfiguration::APPLICATION_DEFINITION_FILE);
-        $applications = MagicUtils::get_directory_list(ROOT. '/application');
-        array_walk($applications,function(&$item, $key){
-                $item = basename($item);
-            });
-        
+        $applications = MagicUtils::get_applications();
         print_r($applications);
         foreach ($applications as $application_name) {
             if($application_name == 'Exception'){

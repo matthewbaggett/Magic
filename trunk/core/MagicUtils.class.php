@@ -304,4 +304,21 @@ class MagicUtils
             return false;
         }
     }
+
+    static public function get_applications(){
+        $applications = MagicUtils::get_directory_list(ROOT."/application");
+        foreach($applications as &$application){
+            $application_name = end(explode("/",$application));
+            switch($application_name){
+                case 'Exception':
+                case 'gen':
+                case 'temp':
+                    $application = '';
+                    break;
+                default:
+                    $application = $application_name;
+            }
+        }
+        return array_filter($applications);
+    }
 }

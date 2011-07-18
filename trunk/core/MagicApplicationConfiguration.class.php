@@ -32,21 +32,7 @@ class MagicApplicationConfiguration extends MagicSingleton
         }
 
         // Work out what configs we have
-        $applications = MagicUtils::get_directory_list(ROOT."/application");
-        foreach($applications as &$application){
-            $application_name = end(explode("/",$application));
-            switch($application_name){
-                case 'Exception':
-                case 'gen':
-                case 'temp':
-                    $application = '';
-                    break;
-                default:
-                    $application = $application_name;
-            }
-        }
-        $applications = array_filter($applications);
-
+        $applications = MagicUtils::get_applications();
         //Decide which it is
         foreach ($applications as $application_name) {
             $config = self::get_config($application_name);
