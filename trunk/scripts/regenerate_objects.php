@@ -16,8 +16,7 @@ if (MagicUtils::has_cli_flag('project')) {
 
 } elseif(MagicUtils::has_cli_flag('all')) {
     $php = MagicUtils::get_php_binary();
-    $applications = spyc::YAMLLoad(ROOT . MagicApplicationConfiguration::APPLICATION_DEFINITION_FILE);
-    $applications = $applications['Applications'];
+    $applications = MagicUtils::get_applications();
     foreach ($applications as $application) {
         $exec = str_replace("\n", "", "$php " . __FILE__ . " --project={$application} " . (MagicUtils::has_cli_flag('no-sql')
                 ? '--no-sql' : '') . " " . (MagicUtils::has_cli_flag('no-tests') ? '--no-tests' : ''));
