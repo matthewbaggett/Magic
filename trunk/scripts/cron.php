@@ -19,9 +19,6 @@
         $applications = MagicUtils::get_applications();
         print_r($applications);
         foreach ($applications as $application_name) {
-            if($application_name == 'Exception'){
-               continue;
-            }
             $run = "{$_SERVER['_']} {$_SERVER['PHP_SELF']} {$application_name}";
             echo "Running: $run\n\n";
             passthru($run);
