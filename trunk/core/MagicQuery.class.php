@@ -328,7 +328,6 @@
             }
         }
         public function execute_single_value () {
-        	
             $arr = (array) $this->execute_one();
             return end($arr);
         }
