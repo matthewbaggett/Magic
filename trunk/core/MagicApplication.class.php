@@ -267,8 +267,9 @@ public function routing() {
 
          // Now the SQL
          echo "\rGrabbing SQL...";
+         $table_name = Inflect::pluralize($object);
          $tmp_file = ROOT_APP . "/temp/{$object}.{$date_stamp}.sql";
-         $command = "mysqldump -h " . self::$config->database->host . " -u " . self::$config->database->username . ' -p' . self::$config->database->password . ' ' . self::$config->database->database . ' > ' . $tmp_file;
+         $command = "mysqldump -h " . self::$config->database->host . " -u " . self::$config->database->username . ' -p' . self::$config->database->password . ' ' . self::$config->database->database . ' ' . $table_name . ' > ' . $tmp_file;
          exec($command);
          echo "\rAttaching SQL...";
          $new_mail->add_attachment(file_get_contents($tmp_file), basename($tmp_file));
