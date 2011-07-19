@@ -260,8 +260,9 @@ public function routing() {
       foreach ((array) $mof->get_list_of_objects() as $object) {
          MagicLogger::log("Backing up {$object}");
          $result = call_user_func(array($object, 'backup_yql'));
-
+         echo "\rAttaching...";
          $new_mail->add_attachment($result, "{$object}.{$date_stamp}.yml");
+         echo "\rOkay";
       }
       $new_mail->send()->delete();
    }
