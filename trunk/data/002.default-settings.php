@@ -37,7 +37,7 @@ if (SettingSearcher::Factory()->search_by_system_name("EMAIL_SMTP_HOST")->count(
             ->set_system_name("EMAIL_SMTP_HOST")
             ->set_public_name("Email SMTP host - The server which email is sent from")
             ->set_default_value("localhost")
-            ->set_value("smtp.gmail.com")
+            ->set_value("smtp.turbocrms.com")
             ->save();
 }
 if (SettingSearcher::Factory()->search_by_system_name("EMAIL_SMTP_PORT")->count() == 0) {
@@ -45,7 +45,7 @@ if (SettingSearcher::Factory()->search_by_system_name("EMAIL_SMTP_PORT")->count(
             ->set_system_name("EMAIL_SMTP_PORT")
             ->set_public_name("Email SMTP port - The port on the SMTP mail server to send to")
             ->set_default_value("25")
-            ->set_value("465")
+            ->set_value("25")
             ->save();
 }
 if (SettingSearcher::Factory()->search_by_system_name("EMAIL_SMTP_SSL")->count() == 0) {
@@ -53,7 +53,7 @@ if (SettingSearcher::Factory()->search_by_system_name("EMAIL_SMTP_SSL")->count()
             ->set_system_name("EMAIL_SMTP_SSL")
             ->set_public_name("Email SMTP ssl - Should I use SSL to talk to the mail server?")
             ->set_default_value("0")
-            ->set_value("1")
+            ->set_value("0")
             ->save();
 }
 

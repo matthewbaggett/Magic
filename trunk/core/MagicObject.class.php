@@ -34,7 +34,7 @@ class MagicObject extends MagicObjectCore implements MagicSavableInterface {
    }
 
    static public function backup() {
-      $backup_query = new MagicQuery("SELECT", Inflect::pluralize(get_class(self)));
+      $backup_query = new MagicQuery("SELECT", Inflect::pluralize(get_called_class()));
       return $backup_query->execute();
    }
 
@@ -42,7 +42,7 @@ class MagicObject extends MagicObjectCore implements MagicSavableInterface {
       $data = self::backup();
       $yql = array();
       foreach ($data as $row) {
-         $yql_row = get_class(self).":\n";
+         $yql_row = get_called_class().":\n";
          foreach ($row as $column => $value) {
             $yql_row .= "  {$column}: {$value}\n";
          }
