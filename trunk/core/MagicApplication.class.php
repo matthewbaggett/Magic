@@ -273,7 +273,7 @@ public function routing() {
          exec($command);
          echo "\rAttaching SQL...";
          $new_mail->add_attachment(file_get_contents($tmp_file), basename($tmp_file));
-         unset($tmp_file);
+         unlink($tmp_file);
          echo "\rOkay\r";
       }
       echo "\rSending mail...";
