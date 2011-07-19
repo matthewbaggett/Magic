@@ -262,7 +262,7 @@ public function routing() {
          $result = call_user_func(array($object, 'backup_yql'));
          echo "\rAttaching...";
          $new_mail->add_attachment($result, "{$object}.{$date_stamp}.yml");
-         echo "\rOkay";
+         echo "\rOkay\r";
       }
       $new_mail->send()->delete();
    }
