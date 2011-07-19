@@ -269,14 +269,15 @@ public function routing() {
          echo "\rGrabbing SQL...";
          $tmp_file = ROOT_APP . "/temp/{$object}.{$date_stamp}.sql";
          $command = "mysqldump -h " . self::$config->database->host . " -u " . self::$config->database->username . ' -p' . self::$config->database->password . ' ' . self::$config->database->database . ' > ' . $tmp_file;
-         echo " $command";
          exec($command);
          echo "\rAttaching SQL...";
          $new_mail->add_attachment(file_get_contents($tmp_file), basename($tmp_file));
          unset($tmp_file);
          echo "\rOkay\r";
       }
+      echo "\rSending mail...";
       $new_mail->send()->delete();
+      echo "\rSent!\n\n";
    }
 
    public function mailTaskAction() {
