@@ -268,7 +268,9 @@ public function routing() {
          // Now the SQL
          echo "\rGrabbing SQL...";
          $tmp_file = ROOT_APP . "/temp/{$object}.{$date_stamp}.sql";
-         MagicQuery::Factory("SELECT",Inflect::pluralize($object))->addColumn("* INTO OUTFILE '{$tmp_file}'")->execute();
+         $sql_get_query = MagicQuery::Factory("SELECT",Inflect::pluralize($object))->addColumn("* INTO OUTFILE '{$tmp_file}'");
+         echo $sql_get_query->query();
+         $sql_get_query->execute();
          echo "\rAttaching SQL...";
          $new_mail->add_attachment(file_get_contents($tmp_file), basename($tmp_file));
          echo "\rOkay\r";
