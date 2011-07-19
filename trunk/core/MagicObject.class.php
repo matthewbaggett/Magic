@@ -39,7 +39,6 @@ class MagicObject extends MagicObjectCore implements MagicSavableInterface {
    }
 
    static public function backup_yql() {
-      ini_set('memory_limit','1024M');
       echo "Downloading...";
       $data = self::backup();
       $yql = array();

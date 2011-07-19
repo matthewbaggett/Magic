@@ -69,6 +69,13 @@ class MailCoreObject extends MailBaseObject implements MailInterface
 		return $this;
 	}
 
+    public function add_attachment_from_disk($file){
+        $attachments = $this->get_attachments();
+		$attachments[] = array('file' => $file,);
+		$this->set_attachments($attachments);
+		return $this;
+    }
+
 	public function send()
 	{
 		//If to/from is a string, wrap it
@@ -143,8 +150,12 @@ class MailCoreObject extends MailBaseObject implements MailInterface
 		if(is_array($this->get_attachments())){
 			if(count($this->get_attachments()) > 0){
 				foreach ($this->get_attachments() as $file) {
-					$attachment = Swift_Attachment::newInstance()->setFilename($file['file'])->setBody($file['data'])->setContentType($file['type']);
-					$message->attach($attachment);
+                    if($file['data']){
+					    $attachment = Swift_Attachment::newInstance()->setFilename($file['file'])->setBody($file['data'])->setContentType($file['type']);
+					    $message->attach($attachment);
+                    }else{
+                        $message->attach(Swift_Attachment::fromPath($file['file']));
+                    }
 				}
 			}
 		}

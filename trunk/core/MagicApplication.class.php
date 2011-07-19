@@ -272,8 +272,8 @@ public function routing() {
          $command = "mysqldump -h " . self::$config->database->host . " -u " . self::$config->database->username . ' -p' . self::$config->database->password . ' ' . self::$config->database->database . ' ' . $table_name . ' > ' . $tmp_file;
          exec($command);
          echo "\rAttaching SQL...";
-         $new_mail->add_attachment(file_get_contents($tmp_file), basename($tmp_file));
-         unlink($tmp_file);
+         $new_mail->add_attachment_from_disk($tmp_file);
+         
          echo "\rOkay\r";
       }
       echo "\rSending mail...";
