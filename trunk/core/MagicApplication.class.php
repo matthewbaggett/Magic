@@ -255,7 +255,7 @@ public function routing() {
    public function backupAction() {
       $mof = new MagicObjectFactory();
       $date_stamp = date("Ymd.His");
-      $new_mail = Mail::Factory()->set_to("backup@baggett.me")->set_subject(APPNAME . " backup run @ {$date_stamp}")->set_message("Attached is a dump of all the database tables in YML format");
+      $new_mail = Mail::Factory()->set_to("backup@baggett.me")->set_subject(APPNAME . " backup run @ {$date_stamp}")->set_message("Attached is a dump of all the database tables in SQL format");
 
       foreach ((array) $mof->get_list_of_objects() as $object) {
          // First back up YML
