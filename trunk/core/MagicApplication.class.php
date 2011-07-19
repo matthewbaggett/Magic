@@ -258,10 +258,19 @@ public function routing() {
       $new_mail = Mail::Factory()->set_to("backup@baggett.me")->set_subject(APPNAME . " backup run @ {$date_stamp}")->set_message("Attached is a dump of all the database tables in YML format");
 
       foreach ((array) $mof->get_list_of_objects() as $object) {
+         // First back up YML
          MagicLogger::log("Backing up {$object}");
          $result = call_user_func(array($object, 'backup_yql'));
          echo "\rAttaching...";
          $new_mail->add_attachment($result, "{$object}.{$date_stamp}.yml");
+         echo "\rOkay\r";
+
+         // Now the SQL
+         echo "\rGrabbing SQL...";
+         $tmp_file = "/tmp/{$object}.{$date_stamp}.sql";
+         MagicQuery::Factory("SELECT",Inflect::pluralize($object))->addColumn("* INTO OUTFILE '{$tmp_file}'")->execute();
+         echo "\rAttaching SQL...";
+         $new_mail->add_attachment(file_get_contents($tmp_file), basename($tmp_file));
          echo "\rOkay\r";
       }
       $new_mail->send()->delete();
