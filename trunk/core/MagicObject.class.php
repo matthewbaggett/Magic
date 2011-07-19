@@ -39,15 +39,19 @@ class MagicObject extends MagicObjectCore implements MagicSavableInterface {
    }
 
    static public function backup_yql() {
+      echo "Downloading...";
       $data = self::backup();
       $yql = array();
+      $row_total = count($data);
       foreach ($data as $row) {
+         echo "\rProcessing $row of $row_total";
          $yql_row = get_called_class().":\n";
          foreach ($row as $column => $value) {
             $yql_row .= "  {$column}: {$value}\n";
          }
          $yql[] = $yql_row;
       }
+      echo "\r";
       return trim(implode("\n", $yql));
    }
 }
