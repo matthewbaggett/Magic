@@ -168,88 +168,94 @@ public function routing() {
    }
 
    public function cronAction() {
-      MagicLogger::log("Running cron at " . date("F j, Y, g:i a e") . " (" . time() . ")");
-      /*
-       * Find the PHP5.3 executable
-       */
-      $php_to_run = MagicUtils::get_php_binary();
-      MagicLogger::log("PHP binary: {$php_to_run}");
-      $message_lines[] = "PHP binary: {$php_to_run}";
-      /*
-       * Decide what to run
-       */
-      http: //www.bukkit.turbocrms.com/
-      $crons_to_run = array();
-      $crons_to_run[] = "minute";
-      $time_to_run_nightly = strtotime("today 00:00");
-      $time_to_run_daily = strtotime("today 12:00");
-      if (time() > $time_to_run_nightly && time() < $time_to_run_nightly + 60) {
-         $crons_to_run[] = "nightly";
-      }
-      if (time() > $time_to_run_daily && time() < $time_to_run_daily + 60) {
-         $crons_to_run[] = "daily";
-      }
-      if (date("i") == "00") {
-         $crons_to_run[] = "hourly";
-      }
-
-      /*
-       * Gather files
-       */
-      $files_to_run = array();
-      if (in_array("minute", $crons_to_run)) {
-         $files_to_run = array_merge($files_to_run, (array)MagicUtils::get_directory_list(DIR_APP . "/cron/minute"));
-      }
-      if (in_array("nightly", $crons_to_run)) {
-         $files_to_run = array_merge($files_to_run, (array)MagicUtils::get_directory_list(DIR_APP . "/cron/nightly"));
-      }
-      if (in_array("daily", $crons_to_run)) {
-         $files_to_run = array_merge($files_to_run, (array)MagicUtils::get_directory_list(DIR_APP . "/cron/daily"));
-      }
-      if (in_array("hourly", $crons_to_run)) {
-         $files_to_run = array_merge($files_to_run, (array)MagicUtils::get_directory_list(DIR_APP . "/cron/hourly"));
-      }
-      MagicLogger::log("Crons to run: " . implode(", ", $crons_to_run));
-
-      /*
-       * Sort the files by name
-       */
-      sort($files_to_run);
-
-      /*
-       * Crunch through files
-       */
-      foreach ($files_to_run as $file_to_run) {
-         //Make the string that exec() is going to exec.
-         $file_to_run = trim($file_to_run);
-         $run = "{$php_to_run} {$file_to_run}";
-         //Log the execution line
-         MagicLogger::log("Executing: {$run}");
-         $message_lines[] = "Executing: {$run}";
-         //Execute...
-         $this_run_output = array();
-         exec($run, $this_run_output);
-
-         //Log the execution result
-         foreach ($this_run_output as $line) {
-            $line = " > " . $line;
-            echo $line . "\n";
-
-            $message_lines[] = $line;
-         }
-         $message_lines[] = '';
-      }
-
-      //Add some more data about the crontab that just ran
-      $message_lines[] = "Run on " . date("F j, Y, g:i a");
-      $message_lines[] = "Crontab minute run - " . date("Y/m/d H:i:s");
-      $message_lines[] = print_r($files_to_run, true);
-
-      //Email the cron results
-      if (MagicConfig::get("EMAIL_ON_EVERY_CRON") == "true") {
-         Mail::Factory()->set_subject(APPNAME . " crontab - " . implode(", ", $crons_to_run))->set_message(implode("\n", $message_lines))->save()->send();
-      }
-      exit;
+   	  /*
+   	   * Check to see if we should be running the cron.
+   	   */
+   	
+   	  if(SettingController::get('CRON_ACTIVE') == 1){
+	      MagicLogger::log("Running cron at " . date("F j, Y, g:i a e") . " (" . time() . ")");
+	      /*
+	       * Find the PHP5.3 executable
+	       */
+	      $php_to_run = MagicUtils::get_php_binary();
+	      MagicLogger::log("PHP binary: {$php_to_run}");
+	      $message_lines[] = "PHP binary: {$php_to_run}";
+	      /*
+	       * Decide what to run
+	       */
+	      http: //www.bukkit.turbocrms.com/
+	      $crons_to_run = array();
+	      $crons_to_run[] = "minute";
+	      $time_to_run_nightly = strtotime("today 00:00");
+	      $time_to_run_daily = strtotime("today 12:00");
+	      if (time() > $time_to_run_nightly && time() < $time_to_run_nightly + 60) {
+	         $crons_to_run[] = "nightly";
+	      }
+	      if (time() > $time_to_run_daily && time() < $time_to_run_daily + 60) {
+	         $crons_to_run[] = "daily";
+	      }
+	      if (date("i") == "00") {
+	         $crons_to_run[] = "hourly";
+	      }
+	
+	      /*
+	       * Gather files
+	       */
+	      $files_to_run = array();
+	      if (in_array("minute", $crons_to_run)) {
+	         $files_to_run = array_merge($files_to_run, (array)MagicUtils::get_directory_list(DIR_APP . "/cron/minute"));
+	      }
+	      if (in_array("nightly", $crons_to_run)) {
+	         $files_to_run = array_merge($files_to_run, (array)MagicUtils::get_directory_list(DIR_APP . "/cron/nightly"));
+	      }
+	      if (in_array("daily", $crons_to_run)) {
+	         $files_to_run = array_merge($files_to_run, (array)MagicUtils::get_directory_list(DIR_APP . "/cron/daily"));
+	      }
+	      if (in_array("hourly", $crons_to_run)) {
+	         $files_to_run = array_merge($files_to_run, (array)MagicUtils::get_directory_list(DIR_APP . "/cron/hourly"));
+	      }
+	      MagicLogger::log("Crons to run: " . implode(", ", $crons_to_run));
+	
+	      /*
+	       * Sort the files by name
+	       */
+	      sort($files_to_run);
+	
+	      /*
+	       * Crunch through files
+	       */
+	      foreach ($files_to_run as $file_to_run) {
+	         //Make the string that exec() is going to exec.
+	         $file_to_run = trim($file_to_run);
+	         $run = "{$php_to_run} {$file_to_run}";
+	         //Log the execution line
+	         MagicLogger::log("Executing: {$run}");
+	         $message_lines[] = "Executing: {$run}";
+	         //Execute...
+	         $this_run_output = array();
+	         exec($run, $this_run_output);
+	
+	         //Log the execution result
+	         foreach ($this_run_output as $line) {
+	            $line = " > " . $line;
+	            echo $line . "\n";
+	
+	            $message_lines[] = $line;
+	         }
+	         $message_lines[] = '';
+	      }
+	
+	      //Add some more data about the crontab that just ran
+	      $message_lines[] = "Run on " . date("F j, Y, g:i a");
+	      $message_lines[] = "Crontab minute run - " . date("Y/m/d H:i:s");
+	      $message_lines[] = print_r($files_to_run, true);
+	
+	      //Email the cron results
+	      if (MagicConfig::get("EMAIL_ON_EVERY_CRON") == "true") {
+	         Mail::Factory()->set_subject(APPNAME . " crontab - " . implode(", ", $crons_to_run))->set_message(implode("\n", $message_lines))->save()->send();
+	      }
+	      exit;
+   	  }
    }
 
    public function backupAction() {
