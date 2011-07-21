@@ -12,16 +12,14 @@ class MagicSearcher {
                     $mode = "=";
                     break;
                 case 'like':
-                    $mode = "LIKE";
+                case 'in':
+                    $mode = strtoupper($search['mode']);
                     break;
                 case '>':
-                    $mode = '>';
-                    break;
                 case '<':
-                    $mode = '<';
-                    break;
-                case 'in':
-                    $mode = "IN";
+                case '<=':
+                case '>=':
+                    $mode = $search['mode'];
                     break;
                 default:
                     throw new MagicException("Query mode '{$search['mode']}' is not a valid mode.");
