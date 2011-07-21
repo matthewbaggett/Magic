@@ -77,3 +77,16 @@ if (SettingSearcher::Factory()->search_by_system_name("EMAIL_SMTP_PASSWORD")->co
             ->set_value("n75G7ER2oJ5L3LL")
             ->save();
 }
+
+/*
+ * Default cron config
+ */
+            
+if (SettingSearcher::Factory()->search_by_system_name("CRON_ACTIVE")->count() == 0) {
+    Setting::Factory()
+            ->set_system_name("CRON_ACTIVE")
+            ->set_public_name("Cron active - Should the cron be running currently?")
+            ->set_default_value("1")
+            ->set_value("1")
+            ->save();
+}
