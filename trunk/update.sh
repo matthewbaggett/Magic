@@ -1,2 +1,3 @@
 #!/bin/bash
-svn update . applications/* plugins/*
+svn cleanup
+svn update . application/* plugins/*
