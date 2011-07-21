@@ -12,7 +12,7 @@ class MagicLogger
         } else {
             fb::setEnabled(false);
         }
-        MagicLogger::log("MagicLogger initialised");
+        #MagicLogger::log("MagicLogger initialised");
     }
 
     static public function log($Object, $Label = null)
