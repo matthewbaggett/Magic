@@ -17,7 +17,7 @@ class MagicDatabase {
             try {
                
                $dns = "mysql:dbname=" . self::$config->database . ";host=" . self::$config->host . ";port=" . self::$config->port . ";charset=UTF-8";
-               MagicLogger::log("Connected to ".self::$config->database." on ".self::$config->host);
+               //MagicLogger::log("Connected to ".self::$config->database." on ".self::$config->host);
                self::$pdo = new PDO($dns, self::$config->username, self::$config->password);
                MagicPerformanceLog::mark("Connected to database!");
             } catch (Exception $e) {

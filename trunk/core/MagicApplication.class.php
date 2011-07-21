@@ -173,13 +173,13 @@ class MagicApplication {
 		 */
 
 		if(SettingController::get('CRON_ACTIVE') == 1){
-			MagicLogger::log("Running cron at " . date("F j, Y, g:i a e") . " (" . time() . ")");
+			
 			/*
 			 * Find the PHP5.3 executable
 			 */
 			$php_to_run = MagicUtils::get_php_binary();
-			MagicLogger::log("PHP binary: {$php_to_run}");
-			$message_lines[] = "PHP binary: {$php_to_run}";
+			//MagicLogger::log("PHP binary: {$php_to_run}");
+			//$message_lines[] = "PHP binary: {$php_to_run}";
 			/*
 			 * Decide what to run
 			 */
@@ -213,7 +213,7 @@ class MagicApplication {
 			if (in_array("hourly", $crons_to_run)) {
 				$files_to_run = array_merge($files_to_run, (array)MagicUtils::get_directory_list(DIR_APP . "/cron/hourly"));
 			}
-			MagicLogger::log("Crons to run: " . implode(", ", $crons_to_run));
+			//MagicLogger::log("Crons to run: " . implode(", ", $crons_to_run));
 
 			/*
 			 * Sort the files by name

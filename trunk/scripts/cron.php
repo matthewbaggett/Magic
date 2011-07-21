@@ -3,7 +3,7 @@
     if (isset($argv[1])) {
         require_once(dirname(__FILE__) . "/../core/MagicCore.php");
         $application_name = $argv[1];
-        MagicLogger::log("Running cron for {$application_name}");
+        MagicLogger::log("Running cron for {$application_name} cron @ " . date("F j, Y, g:i a e") . " (" . time() . ")");
         $config = MagicApplicationConfiguration::LoadByName($application_name);
         try {
             $app = new Application($config);
