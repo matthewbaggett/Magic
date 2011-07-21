@@ -228,6 +228,7 @@ class MagicApplication {
 				$file_to_run = trim($file_to_run);
 				$run = "{$php_to_run} {$file_to_run}";
 				//Log the execution line
+				MagicLogger::log("");
 				MagicLogger::log("Executing: {$run}");
 				$message_lines[] = "Executing: {$run}";
 				//Execute...
