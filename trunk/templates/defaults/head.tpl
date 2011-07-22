@@ -6,6 +6,11 @@
 <meta http-equiv="pragma" content="no-cache"/>
 <meta http-equiv="cache-control" content="no-cache"/>
 
+<!-- Begin The Open Graph Protocol items -->
+<meta property="og:title" content="{sprintf($page->site->title,$page->title)}" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{MagicUtils::canonical()}" />
+<!-- <meta property="og:image" content="http://ia.media-imdb.com/images/rock.jpg" />-->
 
    {nocache}
       <title>{sprintf($page->site->title,$page->title)}</title>

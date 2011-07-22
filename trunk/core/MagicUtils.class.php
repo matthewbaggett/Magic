@@ -2,6 +2,10 @@
 class MagicUtils
 {
 
+	static public function canonical(){
+		$self = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URL'];
+		return $self;
+	}
     static public function fuzzyTime($time)
     {
         //echo $time." is: ";
