@@ -91,7 +91,6 @@
                     foreach($listing as $file){
                         MagicLogger::log("Running datafile: $file");
                         include_once($file);
-
                     }
                 }
 
