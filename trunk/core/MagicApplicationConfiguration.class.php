@@ -51,6 +51,7 @@ class MagicApplicationConfiguration extends MagicSingleton
     {
         $config = self::get_config($application_name);
         MagicApplicationConfiguration::$singleton = MagicApplicationConfiguration::ManufactureConfig($config);
+        
         return MagicApplicationConfiguration::$singleton;
     }
 

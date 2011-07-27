@@ -36,9 +36,10 @@ class MagicApplication {
 		}
 		$this->app_root = MagicApplicationConfiguration::Factory()->app_root;
 		MagicPerformanceLog::mark("MagicApplication __construct()");
+		if(self::$config->database === null){
+			die("Sorry, cannot boot. I have no configuration.\n");
+		}
 		MagicDB::$database = MagicDatabase::Factory()->boot(self::$config->database);
-
-
 	}
 
 	public function routing() {
@@ -116,6 +117,7 @@ class MagicApplication {
 		if (FORCE_REGEN) {
 			MagicCache::clear();
 		}
+		
 		$this->object_factory = new MagicObjectFactory();
 		$this->object_factory->check();
 
