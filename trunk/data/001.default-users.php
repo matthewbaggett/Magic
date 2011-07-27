@@ -1,5 +1,19 @@
 <?php
+if(UserSearcher::Factory()->search_by_username("system")->count() == 0){
+	MagicQuery::Factory("INSERT","Users")
+		->addSet("id",-1)
+		->addSet('username','system')
+		->addSet('email','geeks@turbocrms.com')
+		->addSet('nickname','Turbo System')
+		->addSet('level','basic')
+		->addSet('active','unactive')
+		->addSet('firstname','Turbo')
+		->addSet('surname','System')
+		->addSet('date_of_birth',time())
+		->addSet('date_of_registration',time())
+		->execute();
 
+}
 if(UserSearcher::Factory()->search_by_username("geusebio")->count() == 0){
     User::Factory()
         ->set_username("geusebio")

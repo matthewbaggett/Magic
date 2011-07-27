@@ -33,11 +33,10 @@
 		return (TRUE);
 	}
 
-	$applications = spyc::YAMLLoad(ROOT . MagicApplicationConfiguration::APPLICATION_DEFINITION_FILE);
-
+	$applications = MagicUtils::get_applications();
 	recursiveChmod(MagicCache::FILE_STORAGE_LOCATION, 0666, 0777);
 
-	foreach ($applications['Applications'] as $application_name) {
+	foreach ($applications as $application_name) {
       recursiveChmod(ROOT . "/config", 0666, 0777);
 		recursiveChmod(sprintf(rtrim(ROOT,"/") . MagicObjectFactory::OBJECT_GENERATION_OUTPUT_DIR, $application_name), 0666, 0777);
 		mkdir(sprintf(rtrim(ROOT,"/") . "/application/%s/temp",$application_name));

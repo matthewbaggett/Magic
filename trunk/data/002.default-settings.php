@@ -37,7 +37,7 @@ if (SettingSearcher::Factory()->search_by_system_name("EMAIL_SMTP_HOST")->count(
             ->set_system_name("EMAIL_SMTP_HOST")
             ->set_public_name("Email SMTP host - The server which email is sent from")
             ->set_default_value("localhost")
-            ->set_value("smtp.turbocrms.com")
+            ->set_value("mail.turbocrms.com")
             ->save();
 }
 if (SettingSearcher::Factory()->search_by_system_name("EMAIL_SMTP_PORT")->count() == 0) {

@@ -12,10 +12,10 @@
 				MagicCache::$use_apc = true;
 			} else {
 				MagicCache::$use_apc = false;
-				if (!is_dir(DIR_TEMP . MagicCache::FILE_STORAGE_LOCATION)) {
+				if (!is_dir(DIR_TEMP . "/" . MagicCache::FILE_STORAGE_LOCATION)) {
                     //echo "Dir: " . DIR_TEMP . MagicCache::FILE_STORAGE_LOCATION;
-					if(!mkdir(DIR_TEMP . MagicCache::FILE_STORAGE_LOCATION)){
-                        throw new MagicException("Cannot make cache directory in ".DIR_TEMP . MagicCache::FILE_STORAGE_LOCATION);
+					if(!mkdir(DIR_TEMP . "/" . MagicCache::FILE_STORAGE_LOCATION)){
+                        throw new MagicException("Cannot make cache directory in ".DIR_TEMP . "/" . MagicCache::FILE_STORAGE_LOCATION);
                     }
 				}
 			}
@@ -37,7 +37,7 @@
 				apc_clear_cache("user");
 				apc_clear_cache("opcode");
 			} else {
-				MagicCache::delete_directory(MagicCache::FILE_STORAGE_LOCATION . APPNAME . "/");
+				MagicCache::delete_directory(DIR_TEMP . "/" . MagicCache::FILE_STORAGE_LOCATION . APPNAME . "/");
 			}
 		}
 
@@ -83,7 +83,7 @@
 
 		public function file_get ($key)
 		{
-			$file_path = MagicCache::FILE_STORAGE_LOCATION . APPNAME . "/" . $key;
+			$file_path = DIR_TEMP . "/" . MagicCache::FILE_STORAGE_LOCATION . APPNAME . "/" . $key;
 			if (file_exists($file_path)) {
 				return file_get_contents($file_path);
 			} else {
@@ -93,7 +93,7 @@
 
 		public function file_set ($key, $value)
 		{
-			$directory = MagicCache::FILE_STORAGE_LOCATION . APPNAME . "/";
+			$directory = DIR_TEMP . "/" . MagicCache::FILE_STORAGE_LOCATION . APPNAME . "/";
 			if (!file_exists($directory)) {
 				if (!@mkdir($directory, 0777, true)) {
 					throw new MagicException("Cannot make directory: {$directory}");
