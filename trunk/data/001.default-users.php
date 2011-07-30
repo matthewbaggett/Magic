@@ -1,5 +1,7 @@
 <?php
+
 if(UserSearcher::Factory()->search_by_username("system")->count() == 0){
+	echo "  Adding system user\n";
 	MagicQuery::Factory("INSERT","Users")
 		->addSet("id",-1)
 		->addSet('username','system')
@@ -15,6 +17,7 @@ if(UserSearcher::Factory()->search_by_username("system")->count() == 0){
 
 }
 if(UserSearcher::Factory()->search_by_username("geusebio")->count() == 0){
+	echo "  Adding G. Eusebio\n";
     User::Factory()
         ->set_username("geusebio")
         ->set_email("matthew@baggett.me")
@@ -30,6 +33,7 @@ if(UserSearcher::Factory()->search_by_username("geusebio")->count() == 0){
         ->save();
 }
 if(UserSearcher::Factory()->search_by_username("guest")->count() == 0){
+	echo "  Adding Guest\n";
     User::Factory()
         ->set_username("guest")
         ->set_email("geeks@turbocrms.com")

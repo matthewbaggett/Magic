@@ -78,7 +78,12 @@ class MailCoreObject extends MailBaseObject implements MailInterface
 
 	public function send()
 	{
-		//If to/from is a string, wrap it
+		// Do not send mail, if EMAIL_ENABLED is zero.
+		if(MagicConfig::get('EMAIL_ENABLED') == 0){
+			return;
+		}
+		
+		// If to/from is a string, wrap it
 		if (!is_array($this->get_from())) {
 			if (strlen($this->get_from()) > 0) {
 				$this->set_from(array($this->get_from()));
@@ -90,11 +95,11 @@ class MailCoreObject extends MailBaseObject implements MailInterface
 			}
 		}
 
-		//Filter out empties
+		// Filter out empties
 		$this->set_to(array_filter($this->get_to()));
 		$this->set_from(array_filter($this->get_from()));
 
-		//If the array is empty, add the default locations
+		// If the array is empty, add the default locations
 		if (count($this->get_from()) == 0) {
 			$this->add_from(MagicConfig::get("SERVER_EMAIL"));
 		}
@@ -102,27 +107,27 @@ class MailCoreObject extends MailBaseObject implements MailInterface
 			$this->add_to(MagicConfig::get("ADMIN_EMAIL"));
 		}
 
-		//Start processing
+		// Start processing
 		$this->set_attempts($this->get_attempts() + 1)->save();
 		MagicLogger::log("Sending mail, attempt #{$this->get_attempts()}");
 
-		//Find the transport..
+		// Find the transport..
 		if (!self::$transport) {
 			self::$transport = Swift_SmtpTransport::newInstance()->setHost(MagicConfig::get("EMAIL_SMTP_HOST"))->setPort(MagicConfig::get('EMAIL_SMTP_PORT'))->setEncryption(
 				MagicConfig::get('EMAIL_SMTP_SSL') ? 'ssl' : null
 			)->setUsername(MagicConfig::get('EMAIL_SMTP_USERNAME'))->setPassword(MagicConfig::get('EMAIL_SMTP_PASSWORD'));
 		}
 
-		//Find the mailer...
+		// Find the mailer...
 		if (!self::$mailer) {
 			self::$mailer = Swift_Mailer::newInstance(self::$transport);
 		}
       
-		//Generate the message
+		// Generate the message
 		$format = $this->get_type() == 'html' ? 'text/html' : 'text/plain';
 		$message = Swift_Message::newInstance(self::$transport)->setSubject($this->get_subject())->setBody($this->get_message(), $format);
 
-		//Process the list of to & froms.
+		// Process the list of to & froms.
 		foreach ($this->get_from() as $address) {
 			$address_bits = explode(" ", $address, 2);
 			if (count($address_bits) == 2) {
@@ -146,7 +151,7 @@ class MailCoreObject extends MailBaseObject implements MailInterface
 			}
 		}
 
-		//Run through the attachment
+		// Run through the attachment
 		if(is_array($this->get_attachments())){
 			if(count($this->get_attachments()) > 0){
 				foreach ($this->get_attachments() as $file) {
@@ -160,7 +165,7 @@ class MailCoreObject extends MailBaseObject implements MailInterface
 			}
 		}
 
-		//Set some headers
+		// Set some headers
 		$headers = $message->getHeaders();
 		$headers->addTextHeader('X-Mail-Instance-ID', $this->get_mail_instance_id());
 		$headers->addTextHeader('X-Mail-Timestamp-Queued', $this->get_timestamp_queued());
@@ -168,7 +173,7 @@ class MailCoreObject extends MailBaseObject implements MailInterface
 		$headers->addTextHeader('X-Mail-Attempt', $this->get_attempts());
 		$headers->addTextHeader('X-Mail-Host', gethostname());
 
-		//Fire off the email
+		// Fire off the email
 		MagicLogger::log("Sending from " . implode(", ", $this->get_from()) . " to " . implode(", ", $this->get_to()) . " Subject: '{$this->get_subject()}'");
 		if (self::$mailer->send($message)) {
 			$this->set_sent('sent')->set_timestamp_sent(time())->save();

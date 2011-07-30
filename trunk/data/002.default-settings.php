@@ -10,6 +10,18 @@ if (SettingSearcher::Factory()->search_by_system_name("REGEN_COUNT")->count() ==
 }
 
 /*
+ * Enable/Disable email
+ */
+if (SettingSearcher::Factory()->search_by_system_name("EMAIL_ENABLED")->count() == 0) {
+    Setting::Factory()
+            ->set_system_name("EMAIL_ENABLED")
+            ->set_public_name("Enable Email")
+            ->set_default_value("0")
+            ->set_value("1")
+            ->save();
+}
+
+/*
  * Configure the default email addresses
  */
 if (SettingSearcher::Factory()->search_by_system_name("ADMIN_EMAIL")->count() == 0) {
