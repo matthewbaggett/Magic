@@ -88,6 +88,22 @@ UserPrivilege:
   priviledge_id:
     foreign: Priviledge.id
 
+UserSetting:
+  id:
+    key: true
+    type: integer
+    length: 10
+  user_id:
+    foreign: User.id
+  hidden:
+    type: boolean
+  name:
+    type: text
+    length: 32
+  value:
+    type: text
+    length: 512
+
 Prividge:
   id:
     key: true

@@ -18,30 +18,17 @@
 // $Id:$
 
 
-class UserCoreController extends UserBaseController {
+/**
+ * Controller generated August 1, 2011, 2:30:34 pm.
+ */
 
-   static public function loginAction(){
-
-   }
-
-   static public function login($username, $password){
-      $results = UserSearcher::Factory()
-         ->search_by_username($username)
-         ->search_by_password(self::hash_password($password))
-	  	 ->search_by_active(User::ACTIVE_ACTIVE)
-         ->execute();
-      if(count($results) == 0){
-         //throw new MagicLoginException("Cannot login, password or username does not match");
-         return NULL;
-      }elseif(count($results) == 1){
-      	 $_SESSION['user'] = end($results);
-         return $_SESSION['user']; 
-      }else{
-         throw new MagicLoginException("Something crazy happened. There are two (or more) matching users for the details supplied");
-      }
-   }
-   
-   static public function hash_password($password){
-      return hash("SHA1",$password);
-   }
+class UserSettingCoreController extends UserSettingBaseController {
+	public function get($name){
+		$result = UserSettingSearcher::Factory()->search_by_name($name)->execute_one();
+		if(!$result){
+			return NULL;
+		}else{
+			return $result;
+		}
+	}
 }
