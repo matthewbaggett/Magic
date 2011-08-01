@@ -126,7 +126,7 @@ class MagicUtils
 
     static public function redirect($controller, $action = '')
     {
-        header("Location: " . MagicApplication::GetInstance()->page->site->sys_root . "/{$controller}/{$action}");
+        header("Location: " . rtrim(MagicApplication::GetInstance()->page->site->sys_root,"/") . "/{$controller}/{$action}");
         exit;
     }
 
