@@ -1,4 +1,8 @@
 #!/bin/bash
+echo "****************************"
+echo "*        AUTOSQUARE        *"
+echo "****************************"
+
 echo "Preparing backup directory"
 mkdir ~/tmp/backup/autosquare/ -p 
 cd ~/tmp/backup/autosquare/

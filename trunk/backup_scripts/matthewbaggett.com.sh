@@ -1,4 +1,8 @@
 #!/bin/bash
+echo "****************************"
+echo "*    MATTHEWBAGGETT.COM    *"
+echo "****************************"
+
 echo "Preparing backup directory"
 mkdir ~/tmp/backup/matthewbaggett.com/ -p 
 cd ~/tmp/backup/matthewbaggett.com/

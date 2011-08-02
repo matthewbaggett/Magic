@@ -1,4 +1,8 @@
 #!/bin/bash
+echo "****************************"
+echo "*       PHONEALYTICS       *"
+echo "****************************"
+
 echo "Preparing backup directory"
 mkdir ~/tmp/backup/phonealytics/ -p 
 cd ~/tmp/backup/phonealytics/
@@ -13,7 +17,8 @@ for T in `mysql --host=sql.turbocrms.com --user=phonealytics --password=N7GtUeey
 	--password=N7GtUeeyi814g2G \
 	--skip-comments \
 	--skip-extended-insert \
-	--skip-quick phonealytics \
+	--skip-quick \
+	phonealytics \
 	$T > $T.sql;
 done
 
