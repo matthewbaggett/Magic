@@ -34,10 +34,5 @@ class UserCoreObject extends UserBaseObject implements UserInterface {
 		}
 	}
 	
-	public function loginAction(){
-		
-	}
-	public function registerAction(){
-		
-	}
+	
 }

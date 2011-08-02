@@ -20,9 +20,12 @@
 
 class UserCoreController extends UserBaseController {
 
-   static public function loginAction(){
-
-   }
+	public function loginAction(){
+		
+	}
+	public function registerAction(){
+		
+	}	
 
    static public function login($username, $password){
       $results = UserSearcher::Factory()
