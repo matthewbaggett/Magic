@@ -7,7 +7,14 @@ svn checkout -q --no-auth-cache --non-interactive --username phonealytics --pass
 echo "Exporting database to files..."
 for T in `mysql --host=sql.turbocrms.com --user=phonealytics --password=N7GtUeeyi814g2G -N -B -e 'show tables from phonealytics'`; do 
 	echo "  > $T.sql"; 
-	mysqldump --host=sql.turbocrms.com --user=phonealytics --password=N7GtUeeyi814g2G --skip-comments phonealytics $T > $T.sql;
+	mysqldump \
+	--host=sql.turbocrms.com \
+	--user=phonealytics \
+	--password=N7GtUeeyi814g2G \
+	--skip-comments \
+	--skip-extended-insert \
+	--skip-quick phonealytics \
+	$T > $T.sql;
 done
 
 echo "Adding tables to subversion...";
