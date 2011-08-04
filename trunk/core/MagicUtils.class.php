@@ -43,7 +43,8 @@ class MagicUtils
 	
 	static public function canonicalise(){
 		$canonical_url = self::canonical();
-		header("Location: $canonical_url",TRUE,301);
+		echo "Redirect to $canonical_url";
+		//header("Location: $canonical_url",TRUE,301);
 		exit;
 	}
 
