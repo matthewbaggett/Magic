@@ -34,7 +34,7 @@ class MagicUtils
 				$redir = $_SERVER['REQUEST_URI'];
 			}
 			
-			$url = "http://" . $_SERVER['HTTP_HOST'] . $redir . '?' . $gets_string;
+			$url = self::thisdomain() . $redir . '?' . $gets_string;
 			$url = rtrim($url,'?');
 			
 			self::$canonicalised_url = $url;
@@ -44,7 +44,11 @@ class MagicUtils
 	}
 	
 	static public function thisurl(){
-		return "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+		return self::thisdomain() . $_SERVER['REQUEST_URI'];
+	}
+	static public function thisdomain(){
+		$url = "http://" . $_SERVER['HTTP_HOST'];
+		return $url;
 	}
 	
 	static public function canonicalise(){
