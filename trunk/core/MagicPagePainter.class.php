@@ -15,10 +15,11 @@ class MagicPagePainter extends MagicSingleton {
    }
 
    public function init() {
+   	  // print_r($_SERVER); die();
       $this->init_run = true;
       $this->smarty_file_locations['templates'] = DIR_APP . "/template";
       $this->smarty_file_locations['compiled'] = DIR_TEMP . "/smarty/compiled";
-      $this->smarty_file_locations['cache'] = DIR_TEMP . "/smarty/cache";
+      $this->smarty_file_locations['cache'] = DIR_TEMP . "/smarty/cache/" . $_SERVER['REQUEST_URI'] ."/";
       $this->smarty_file_locations['configuration'] = DIR_TEMP . "/smarty/configuration";
       foreach ($this->smarty_file_locations as $name => $file_location) {
          if (!file_exists($file_location)) {
