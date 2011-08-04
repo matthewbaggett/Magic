@@ -14,3 +14,7 @@
 {/literal}
 </script>
 {/if}
+
+{nocache}
+{print_r($page->settings)}
+{/nocache}
