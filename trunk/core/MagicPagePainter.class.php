@@ -59,6 +59,7 @@ class MagicPagePainter extends MagicSingleton {
       MagicLogger::log("Rendering {$file}...");
 
           if ($output) {
+          	 header('Content-type: text/html; charset=utf-8');
              $this->smarty->display($file);
           } else {
              try{
