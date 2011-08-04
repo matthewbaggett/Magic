@@ -28,7 +28,13 @@ class MagicUtils
 			$gets_string = trim($gets_string,'&');
 			
 			// Build the canonicalised URL
-			$url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REDIRECT_URL'] . '?' . $gets_string;
+			if(isset($_SERVER['REDIRECT_URL'])){
+				$redir = $_SERVER['REDIRECT_URL'];
+			}else{
+				$redir = $_SERVER['REQUEST_URI'];
+			}
+			
+			$url = "http://" . $_SERVER['HTTP_HOST'] . $redir . '?' . $gets_string;
 			$url = rtrim($url,'?');
 			
 			self::$canonicalised_url = $url;
@@ -43,8 +49,8 @@ class MagicUtils
 	
 	static public function canonicalise(){
 		$canonical_url = self::canonical();
-		echo "Redirect to $canonical_url";
-		//header("Location: $canonical_url",TRUE,301);
+		//echo "Redirect to $canonical_url";
+		header("Location: $canonical_url",TRUE,301);
 		exit;
 	}
 
