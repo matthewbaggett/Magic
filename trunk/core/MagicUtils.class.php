@@ -37,7 +37,7 @@ class MagicUtils
 			$url = self::thisdomain() . $redir . '?' . $gets_string;
 			$url = rtrim($url,'?');
 			
-			self::$canonicalised_url = $url;
+			self::$canonicalised_url = urlencode($url);
 		}
 		//die("Canonicalised url: " . self::$canonicalised_url);
 		return self::$canonicalised_url;	
