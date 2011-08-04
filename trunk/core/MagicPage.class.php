@@ -17,6 +17,7 @@ class MagicPage
 			$this->user->save();
 		}
 
+		$this->site->name = "Default Magic Site Name";
 		$this->site->title = "Magic Page Title";
 
         $this->settings = new StdClass();
