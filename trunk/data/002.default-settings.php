@@ -130,6 +130,18 @@ if (SettingSearcher::Factory()->search_by_system_name("CRON_ACTIVE")->count() ==
             ->save();
 }
 
+/*
+ * SEO things
+ */
+
+if (SettingSearcher::Factory()->search_by_system_name("CANONICALISATION_ENABLED")->count() == 0) {
+    Setting::Factory()
+            ->set_system_name("CANONICALISATION_ENABLED")
+            ->set_public_name("Use Canonicalised URLS?")
+            ->set_default_value(1)
+            ->set_value(1)
+            ->save();
+}
 
 if (SettingSearcher::Factory()->search_by_system_name("GOOGLE_ANALYTICS_ENABLED")->count() == 0) {
     Setting::Factory()
@@ -148,3 +160,4 @@ if (SettingSearcher::Factory()->search_by_system_name("GOOGLE_ANALYTICS_CODE")->
             ->set_value('no-code-set')
             ->save();
 }
+

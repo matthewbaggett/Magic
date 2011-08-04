@@ -75,6 +75,12 @@ class MagicApplication {
 	}
 
 	public function route() {
+		if(SettingController::get("CANONICALISATION_ENABLED") == 1){
+			MagicPerformanceLog::mark("Canonicalising");
+			if(MagicUtils::canonical() != MagicUtils::thisurl()){
+				MagicUtils::canonicalise();
+			}
+		}
 		MagicPerformanceLog::mark("pre routing()");
 		$this->routing();
 		MagicPerformanceLog::mark("post routing()");

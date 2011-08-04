@@ -36,6 +36,16 @@ class MagicUtils
 		//die("Canonicalised url: " . self::$canonicalised_url);
 		return self::$canonicalised_url;	
 	}
+	
+	static public function thisurl(){
+		return "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	}
+	
+	static public function canonicalise(){
+		$canonical_url = self::canonical();
+		header("Location: $canonical_url",TRUE,301);
+		exit;
+	}
 
 	
 	static public function fuzzyTime($time)
