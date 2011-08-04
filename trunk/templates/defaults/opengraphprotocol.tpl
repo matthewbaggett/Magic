@@ -5,6 +5,7 @@
 <meta property="og:description" content="{$page->settings->site_description}" />
 <meta property="og:type" content="{$page->settings->ogp_type}" />
 <meta property="og:url" content="{MagicUtils::canonical()}" />
+
 {if $page->settings->ogp_location_enable == 1}
 <meta property="og:latitude" 		content="{$page->settings->ogp_location_latitude}" />
 <meta property="og:longitude" 		content="{$page->settings->ogp_location_longitude}" />

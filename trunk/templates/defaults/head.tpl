@@ -12,6 +12,9 @@
 <meta name="description" content="{$page->settings->site_description}" />
 <meta name="time-generated" content="{date('Y/m/d H:i:s')}"/>
 
+{* Add the canonical URL tag *}
+<link rel="canonical" href="{MagicUtils::canonical()}"/>
+
 {include file="file:../../../templates/defaults/opengraphprotocol.tpl"}
 
 {nocache}
