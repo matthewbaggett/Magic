@@ -1,12 +1,44 @@
 <?php
 class MagicUtils
 {
-
+	static $canonicalised_url = null;
 	static public function canonical(){
-		$self = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URL'];
-		return $self;
+		if(self::$canonicalised_url === null){
+			// Work out which gets are being passed as non-url-parameters:
+			$non_parameter_gets = $_SERVER['REQUEST_URI'];
+			$non_parameter_gets = explode("?",$non_parameter_gets,2);
+			$gets = array();
+			if(isset($non_parameter_gets[1])){
+				$non_parameter_gets = $non_parameter_gets[1];
+				$non_parameter_gets = explode("&",$non_parameter_gets);
+				foreach($non_parameter_gets as $non_parameter_get){
+					$bits = explode("=",$non_parameter_get,2);
+					$gets[$bits[0]] = $bits[1];
+				}
+			}
+			
+			// Sort the gets			
+			ksort($gets);
+			
+			// Build the new string
+			$gets_string = '';
+			foreach($gets as $key => $value){
+				$gets_string.= "&$key=$value";
+			}
+			$gets_string = trim($gets_string,'&');
+			
+			// Build the canonicalised URL
+			$url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REDIRECT_URL'] . '?' . $gets_string;
+			$url = rtrim($url,'?');
+			
+			self::$canonicalised_url = $url;
+		}
+		//die("Canonicalised url: " . self::$canonicalised_url);
+		return self::$canonicalised_url;	
 	}
-    static public function fuzzyTime($time)
+
+	
+	static public function fuzzyTime($time)
     {
         //echo $time." is: ";
         
