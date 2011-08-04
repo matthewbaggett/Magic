@@ -1,5 +1,32 @@
 <?php
 
+if (SettingSearcher::Factory()->search_by_system_name("SITE_NAME")->count() == 0) {
+    Setting::Factory()
+            ->set_system_name("SITE_NAME")
+            ->set_public_name("Default site name")
+            ->set_default_value('A TurboCRMS site')
+            ->set_value('A TurboCRMS site')
+            ->save();
+}
+
+if (SettingSearcher::Factory()->search_by_system_name("SITE_DESCRIPTION")->count() == 0) {
+    Setting::Factory()
+            ->set_system_name("SITE_DESCRIPTION")
+            ->set_public_name("Default site description")
+            ->set_default_value('This is where you\'d put a description of your site')
+            ->set_value('This is where you\'d put a description of your site')
+            ->save();
+}
+
+if (SettingSearcher::Factory()->search_by_system_name("SITE_KEYWORDS")->count() == 0) {
+    Setting::Factory()
+            ->set_system_name("SITE_KEYWORDS")
+            ->set_public_name("Default site keywords")
+            ->set_default_value('Default, Site, Keywords')
+            ->set_value('Default, Site, Keywords')
+            ->save();
+}
+
 if (SettingSearcher::Factory()->search_by_system_name("REGEN_COUNT")->count() == 0) {
     Setting::Factory()
             ->set_system_name("REGEN_COUNT")

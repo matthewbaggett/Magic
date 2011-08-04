@@ -6,24 +6,19 @@
 <meta http-equiv="pragma" content="no-cache"/>
 <meta http-equiv="cache-control" content="no-cache"/>
 
-<!-- Begin The Open Graph Protocol items -->
-<meta property="og:title" content="{sprintf($page->site->title,$page->title)}" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="{MagicUtils::canonical()}" />
-<!-- <meta property="og:image" content="http://ia.media-imdb.com/images/rock.jpg" />-->
+{include file="file:../../../opengraphprotocol.tpl"}
 
-   {nocache}
-      <title>{sprintf($page->site->title,$page->title)}</title>
-   {/nocache}
+{nocache}
+	<title>{sprintf($page->site->title,$page->title)}</title>
+{/nocache}
 
-   {foreach from=$page->site->csses item=css}
-      <link href="{$css}" type="text/css" rel="stylesheet">
-   {/foreach}
+{foreach from=$page->site->csses item=css}
+<link href="{$css}" type="text/css" rel="stylesheet">
+{/foreach}
+<script type="text/javascript">
+var app_root = '{$page->site->app_root}';
+</script>
 
-   <script type="text/javascript">
-      var app_root = '{$page->site->app_root}';
-   </script>
-
-   {foreach from=$page->site->scripts item=script}
-      <script type="text/javascript" src="{$script}"></script>
-   {/foreach}
+{foreach from=$page->site->scripts item=script}
+<script type="text/javascript" src="{$script}"></script>
+{/foreach}
