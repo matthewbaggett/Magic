@@ -14,7 +14,7 @@
 {include file="file:../../../templates/defaults/opengraphprotocol.tpl"}
 
 {nocache}
-	<title>{sprintf($page->site->title,$page->title)}</title>
+<title>{sprintf($page->site->title,$page->title)}</title>
 {/nocache}
 
 {foreach from=$page->site->csses item=css}
