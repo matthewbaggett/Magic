@@ -10,7 +10,7 @@
 <meta name="keywords" content="{$page->settings->site_keywords}" >
 <meta name="description" content="{$page->settings->site_description}" >
 
-{include file="file:opengraphprotocol.tpl"}
+{include file="file:./opengraphprotocol.tpl"}
 
 {nocache}
 	<title>{sprintf($page->site->title,$page->title)}</title>
