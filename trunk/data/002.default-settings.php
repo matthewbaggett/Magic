@@ -102,3 +102,22 @@ if (SettingSearcher::Factory()->search_by_system_name("CRON_ACTIVE")->count() ==
             ->set_value("1")
             ->save();
 }
+
+
+if (SettingSearcher::Factory()->search_by_system_name("GOOGLE_ANALYTICS_ENABLED")->count() == 0) {
+    Setting::Factory()
+            ->set_system_name("GOOGLE_ANALYTICS_ENABLED")
+            ->set_public_name("Use Google for Analytics?")
+            ->set_default_value(0)
+            ->set_value(0)
+            ->save();
+}
+
+if (SettingSearcher::Factory()->search_by_system_name("GOOGLE_ANALYTICS_CODE")->count() == 0) {
+    Setting::Factory()
+            ->set_system_name("GOOGLE_ANALYTICS_CODE")
+            ->set_public_name("Code provided by Google for Analytics.")
+            ->set_default_value(0)
+            ->set_value('no-code-set')
+            ->save();
+}

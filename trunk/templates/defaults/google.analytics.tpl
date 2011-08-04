@@ -1,3 +1,4 @@
+{if $page->settings->google_analytics_enabled > 0}
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -12,3 +13,4 @@
   })();
 {/literal}
 </script>
+{/if}
