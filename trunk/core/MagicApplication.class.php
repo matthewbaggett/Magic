@@ -12,7 +12,6 @@ class MagicApplication {
 
 	private $time_startup;
 
-
 	static public function &get_singleton() {
 		return self::$singleton;
 	}
@@ -69,7 +68,6 @@ class MagicApplication {
 				throw new MagicException("Cannot find this page :(", "There is no method {$method} on controller {$controller}");
 			}
 		} else {
-
 			$this->defaultAction();
 		}
 	}
