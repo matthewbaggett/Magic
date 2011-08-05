@@ -7,14 +7,7 @@
 
 
 class <?=$this->name?>BaseController extends MagicController {
-
-        protected $application;
-
         public function Factory(){
             return new <?=$this->name?>Controller();
-        }
-
-        public function __construct(){
-            $this->application = Application::GetInstance();
         }
 }
