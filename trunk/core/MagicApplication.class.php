@@ -87,7 +87,8 @@ class MagicApplication {
 		$this->painter->assign("time_at_execute_start", $this->time_startup);
 		$this->painter->assign("time_at_execute_end", microtime(true));
 		MagicPerformanceLog::mark("Smarty Render Called");
-		if ($this->page->template && $this->page->layout) {
+		//print_r($this->page);
+		if ($this->page->layout) {
 			$this->painter->render($this->page->layout);
 		} elseif ($this->page->template) {
 			$this->painter->render($this->page->template);

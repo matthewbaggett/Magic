@@ -33,6 +33,19 @@ class UserCoreObject extends UserBaseObject implements UserInterface {
 			return TRUE;
 		}
 	}
-	
+	public function loginSuccessful(){
+		$oUserActivity = UserActivity::Factory()
+			->set_user_id($this->get_id())
+			->set_timestamp(time())
+			->set_comment("{$this->get_username()} logged in successfully.")
+			->save();
+	}
+	public function loginFailure(){
+		$oUserActivity = UserActivity::Factory()
+			->set_user_id($this->get_id())
+			->set_timestamp(time())
+			->set_comment("{$this->get_username()} log in rejected.")
+			->save();
+	}
 	
 }

@@ -35,9 +35,13 @@ class UserCoreController extends UserBaseController {
          ->execute();
       if(count($results) == 0){
          //throw new MagicLoginException("Cannot login, password or username does not match");
+         $oUser->loginFailure();
          return NULL;
       }elseif(count($results) == 1){
-      	 $_SESSION['user'] = end($results);
+      	 $oUser = end($results);
+      	 $oUser = User::Cast($oUser);
+      	 $oUser->loginSuccessful();
+      	 $_SESSION['user'] = $oUser;
          return $_SESSION['user']; 
       }else{
          throw new MagicLoginException("Something crazy happened. There are two (or more) matching users for the details supplied");
