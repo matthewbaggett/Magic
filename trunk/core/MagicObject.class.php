@@ -56,4 +56,8 @@ class MagicObject extends MagicObjectCore implements MagicSavableInterface {
       echo "\r";
       return trim(implode("\n", $yql));
    }
+   
+   public function get_id36(){
+      return base_convert($this->get_id(),10,36);
+   }
 }

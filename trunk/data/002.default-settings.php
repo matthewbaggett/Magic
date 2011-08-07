@@ -170,3 +170,12 @@ if (SettingSearcher::Factory()->search_by_system_name("ENABLE_TURBO_CORE")->coun
             ->save();
 }
 
+if (SettingSearcher::Factory()->search_by_system_name("ENABLE_HTML_CACHE")->count() == 0) {
+    Setting::Factory()
+            ->set_system_name("ENABLE_HTML_CACHE")
+            ->set_public_name("Should static/generated HTML cache be enabled? This will speed things up for non-logged-in users.")
+            ->set_default_value(1)
+            ->set_value(1)
+            ->save();
+}
+

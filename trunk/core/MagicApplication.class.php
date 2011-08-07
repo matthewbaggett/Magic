@@ -9,6 +9,7 @@ class MagicApplication {
 	protected $object_factory;
 	public $database;
 	public $app_root;
+	static public $nocache = false;
 
 	private $time_startup;
 
@@ -30,6 +31,10 @@ class MagicApplication {
 	private function checkCacheGet(){
 		$cache_path = $this->cachePath();
 		
+		// Check we're not being run by PHP-CLI
+		if(php_sapi_name() == 'cli'){
+			return FALSE;
+		}
 		// Do we have a cached version?
 		if(!file_exists($cache_path)){
 			MagicLogger::log("No cache file exists at {$cache_path}.");
@@ -50,6 +55,10 @@ class MagicApplication {
 			MagicLogger::log("Request is a POST, not serving {$cache_path}");
 			return FALSE;
 		}
+		// Check to see if ENABLE_HTML_CACHE is enabled
+		if(!SettingController::get('ENABLE_HTML_CACHE')){
+			return FALSE;
+		}
 		// None of the above true? We can served a cached file.
 		return TRUE;
 	}
@@ -57,6 +66,10 @@ class MagicApplication {
 	private function checkCachePut(){
 		$cache_path = $this->cachePath();
 		
+		// Nocache variable set?
+		if(Application::$nocache == true){
+			return FALSE;
+		}
 		// No caching if the user is logged in.
 		if($this->checkCacheGetHasUser()){
 			MagicLogger::log("User is logged in, not SAVING cached file {$cache_path}");
@@ -67,6 +80,11 @@ class MagicApplication {
 			MagicLogger::log("Request is a POST, not SAVING {$cache_path}");
 			return FALSE;
 		}
+		// Check to see if ENABLE_HTML_CACHE is enabled
+		if(!SettingController::get('ENABLE_HTML_CACHE')){
+			return FALSE;
+		}
+		
 		
 		// If all clear...
 		return TRUE;
@@ -97,6 +115,7 @@ class MagicApplication {
 		}else{
 			MagicLogger::log("Disallowed from writing cache file");
 		}
+		
 		return $buffer;
 	}
 	
@@ -127,6 +146,8 @@ class MagicApplication {
 	public function routing() {
 		if (isset($_REQUEST['controller']) && isset($_REQUEST['method'])) {
 			$controller = $_REQUEST['controller'];
+			// Experimental: singularise the controller
+			$controller = Inflect::singularize($controller);
 			$controller_to_call = $controller . "Controller";
 			$method = $_REQUEST['method'];
 			if(!strlen(trim($method)) > 0){
