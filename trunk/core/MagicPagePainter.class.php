@@ -48,8 +48,10 @@ class MagicPagePainter extends MagicSingleton {
 
       // $this->smarty->debugging = true;
 
-      $this->assign("magic_web_root", MagicApplicationConfiguration::Factory()->web_root);
-      $this->assign("magic_app_root", MagicApplicationConfiguration::Factory()->app_root);
+      $this->assign("magic_web_root", 		MagicApplicationConfiguration::Factory()->web_root);
+      $this->assign("magic_app_root", 		MagicApplicationConfiguration::Factory()->app_root);
+      $this->assign("magic_app_root_base", 	MagicApplicationConfiguration::Factory()->app_root_base);
+      
    }
 
    public function assign($key, $value) {

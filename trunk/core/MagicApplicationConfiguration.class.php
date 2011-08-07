@@ -76,8 +76,9 @@ class MagicApplicationConfiguration extends MagicSingleton
         $oConfig = new MagicApplicationConfiguration();
         $oConfig->app_name = $config['AppName'];
         $oConfig->domains = array_merge((array) $config['Aliases'], (array)$config['Domain']);
-        $oConfig->web_root = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
-        $oConfig->app_root = "{$oConfig->web_root}/application/{$oConfig->app_name}/resources/";
+        $oConfig->web_root 		= "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
+        $oConfig->app_root 		= "{$oConfig->web_root}/application/{$oConfig->app_name}/resources/";
+        $oConfig->app_root_base = "{$oConfig->web_root}/application/{$oConfig->app_name}/";
         $oConfig->database = new MagicDatabaseConfig();
         $oConfig->database->host = $config['Database']['Host'];
         $oConfig->database->port = $config['Database']['Port'];
