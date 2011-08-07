@@ -161,3 +161,12 @@ if (SettingSearcher::Factory()->search_by_system_name("GOOGLE_ANALYTICS_CODE")->
             ->save();
 }
 
+if (SettingSearcher::Factory()->search_by_system_name("ENABLE_TURBO_CORE")->count() == 0) {
+    Setting::Factory()
+            ->set_system_name("ENABLE_TURBO_CORE")
+            ->set_public_name("Should core.turbocrms.com services be enabled?")
+            ->set_default_value(1)
+            ->set_value(1)
+            ->save();
+}
+

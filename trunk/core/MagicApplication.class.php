@@ -190,8 +190,10 @@ class MagicApplication {
 		$this->page_reset();
 		
 		// Initiate Node.JS Backbone
-		$this->page->site->scripts[] = "http://core.turbocrms.com:19658/nowjs/now.js";
-		$this->page->site->scripts[] = "http://core.turbocrms.com:19659/corebar.js";
+		if(SettingController::get('ENABLE_TURBO_CORE')){
+			$this->page->site->scripts[] = "http://core.turbocrms.com:19658/nowjs/now.js";
+			$this->page->site->scripts[] = "http://core.turbocrms.com:19659/corebar.js";
+		}
 	}
 	public function page_reset(){
 		$this->page->site->scripts = array();
