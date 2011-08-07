@@ -28,6 +28,14 @@ class MagicApplication {
 		return self::$instance;
 	}
 	
+	/**
+	 * Check to see if a Cache Hit is applicable.
+	 * Checks to see if:
+	 *   - The file exists
+	 *   - The file hasn't expired
+	 *   - The user is NOT logged in (don't show logged in users cached content)
+	 *   - The request is not a $_POST
+	 */
 	private function checkCacheGet(){
 		$cache_path = $this->cachePath();
 		
@@ -55,10 +63,6 @@ class MagicApplication {
 			MagicLogger::log("Request is a POST, not serving {$cache_path}");
 			return FALSE;
 		}
-		// Check to see if ENABLE_HTML_CACHE is enabled
-		if(!SettingController::get('ENABLE_HTML_CACHE')){
-			return FALSE;
-		}
 		// None of the above true? We can served a cached file.
 		return TRUE;
 	}
@@ -68,6 +72,7 @@ class MagicApplication {
 		
 		// Nocache variable set?
 		if(Application::$nocache == true){
+			MagicLogger::log("Page set to NOCACHE");
 			return FALSE;
 		}
 		// No caching if the user is logged in.
@@ -82,6 +87,7 @@ class MagicApplication {
 		}
 		// Check to see if ENABLE_HTML_CACHE is enabled
 		if(!SettingController::get('ENABLE_HTML_CACHE')){
+			MagicLogger::log("Caching disabled in ENABLE_HTML_CACHE setting");
 			return FALSE;
 		}
 		
@@ -162,6 +168,8 @@ class MagicApplication {
 			if (method_exists($oController, $method_to_call)) {
 				$this->page->template = strtolower("{$controller}.{$method}.tpl");
 				//call_user_method($method_to_call, $oController);
+				$this->page->method = $method;
+				$this->page->controller = $controller;
 				if(method_exists($oController, 'AllActions')){
 					call_user_func(array($oController, 'AllActions'),$method);
 				}
