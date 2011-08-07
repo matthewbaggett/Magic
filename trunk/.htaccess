@@ -10,6 +10,7 @@ RewriteRule .* - [L]
 
 RewriteRule ^robots.txt$ ./index.php?controller=SEO&method=robots [L]
 RewriteRule ^sitemap.xml$ ./index.php?controller=SEO&method=sitemap [L]
+RewriteRule ^socket.io/(.*)? ./index.php?controller=SEO&method=fourohfour [L]
 
 RewriteRule (.*)/(.*)/(.*)? ./index.php?controller=$1&method=$2&parameter=$3 [QSA,L]
 RewriteRule (.*)/(.*)? ./index.php?controller=$1&method=$2 [QSA,L]

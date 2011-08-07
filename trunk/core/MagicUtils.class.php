@@ -46,19 +46,38 @@ class MagicUtils
 	static public function thisurl(){
 		return self::thisdomain() . $_SERVER['REQUEST_URI'];
 	}
+	
+	/**
+	 * Return this domain.
+	 */
 	static public function thisdomain(){
 		$url = "http://" . $_SERVER['HTTP_HOST'];
 		return $url;
 	}
 	
+	/**
+	 * Redirect to canonical version
+	 */
 	static public function canonicalise(){
 		$canonical_url = self::canonical();
 		//echo "Redirect to $canonical_url";
 		header("Location: $canonical_url",TRUE,301);
 		exit;
 	}
-
 	
+	/**
+	 * Should we canonicalise this URL?
+	 */
+	static public function canonicalisationAppropriate(){
+		if(count($_POST) > 0){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Display fuzzy time. IE: "One week ago"
+	 */
 	static public function fuzzyTime($time)
     {
         //echo $time." is: ";

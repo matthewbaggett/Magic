@@ -39,6 +39,11 @@ class SEOController extends MagicBaseController{
 		exit;
 	}
 	
+	public function fourohfourAction(){
+		header("HTTP/1.0 404 Not Found");
+		exit;
+	}
+	
 	public function Factory(){
 		return new SEOController();
 	}

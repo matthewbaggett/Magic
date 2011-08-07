@@ -26,19 +26,91 @@ class MagicApplication {
 	public static function GetInstance() {
 		return self::$instance;
 	}
+	
+	private function checkCacheGet(){
+		// Do we have a cached version?
+		if(!file_exists($this->cachePath())){
+			MagicLogger::log("No cache file exists at {$this->cachePath()}.");
+			return FALSE;
+		}
+		// Has the cached file expired?
+		if(filemtime($this->cachePath()) < strtotime('1 hour ago')){
+			MagicLogger::log("File at {$this->cachePath()} too old.");
+			return FALSE;
+		}
+		// No caching if the user is logged in.
+		if($this->checkCacheGetHasUser()){
+			MagicLogger::log("User is logged in, not serving cached file {$this->cachePath()}");
+			return FALSE;
+		}
+		// No caching if there is a POST operation going on
+		if(count($_POST) > 0){
+			MagicLogger::log("Request is a POST, not serving {$this->cachePath()}");
+			return FALSE;
+		}
+		// None of the above true? We can served a cached file.
+		return TRUE;
+	}
+	
+	private function checkCachePut(){
+		// No caching if the user is logged in.
+		if($this->checkCacheGetHasUser()){
+			MagicLogger::log("User is logged in, not serving cached file {$this->cachePath()}");
+			return FALSE;
+		}
+		// No caching if there is a POST operation going on
+		if(count($_POST) > 0){
+			MagicLogger::log("Request is a POST, not serving {$this->cachePath()}");
+			return FALSE;
+		}
+	}
 
+	private function checkCacheGetHasUser(){
+		if(isset($_SESSION['user'])){
+			if(strlen(trim($_SESSION['user']->get_username())) > 0){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private function cacheHit(){
+		MagicLogger::log("Cache Hit :)");
+		echo file_get_contents($this->cachePath());
+		die("<!-- Read from cache at " . date("Y/m/d H:i:s") . "-->\n");
+	}
+	
+	public function cachePut($buffer){
+		if($this->checkCachePut()){
+			$buffer = $buffer . "\n<!-- Cache PUT at " . date("Y/m/d H:i:s") . "-->\n";
+			@mkdir(dirname($this->cachePath()));
+			file_put_contents($this->cachePath(), $buffer);
+		}
+		return $buffer;
+	}
+	
+	private function cachePath(){
+		return DIR_TEMP."/html_cache/".$_SERVER['QUERY_STRING'].'.html';
+	}
 	public function __construct() {
-		$this->time_startup = microtime(true);
-		set_time_limit(90);
+		// Do initialisation stuffs
 		if(PHP_SAPI != 'cli'){
 			session_start();
+			set_time_limit(90);
 		}
-		$this->app_root = MagicApplicationConfiguration::Factory()->app_root;
-		MagicPerformanceLog::mark("MagicApplication __construct()");
-		if(self::$config->database === null){
-			die("Sorry, cannot boot. I have no configuration.\n");
+		$this->time_startup = microtime(true);
+		
+		//Initialisation complete
+		if(1==1 && $this->checkCacheGet()){
+			$this->cacheHit();
+		}else{
+			$this->app_root = MagicApplicationConfiguration::Factory()->app_root;
+			MagicPerformanceLog::mark("MagicApplication __construct()");
+			if(self::$config->database === null){
+				die("Sorry, cannot boot. I have no configuration.\n");
+			}
+			MagicDB::$database = MagicDatabase::Factory()->boot(self::$config->database);
 		}
-		MagicDB::$database = MagicDatabase::Factory()->boot(self::$config->database);
 	}
 
 	public function routing() {
@@ -73,10 +145,13 @@ class MagicApplication {
 	}
 
 	public function route() {
+		ob_start(array($this,'cachePut'));
 		if(SettingController::get("CANONICALISATION_ENABLED") == 1){
-			MagicPerformanceLog::mark("Canonicalising");
-			if(MagicUtils::canonical() != MagicUtils::thisurl()){
-				MagicUtils::canonicalise();
+			if(MagicUtils::canonicalisationAppropriate()){
+				MagicPerformanceLog::mark("Canonicalising");
+				if(MagicUtils::canonical() != MagicUtils::thisurl()){
+					MagicUtils::canonicalise();
+				}
 			}
 		}
 		MagicPerformanceLog::mark("pre routing()");
@@ -98,6 +173,7 @@ class MagicApplication {
 		MagicPerformanceLog::mark("Smarty Render Completed");
 		echo "\n<!-- Generated at " . date('l jS \of F Y h:i:s A') . "-->\n";
 		MagicPerformanceLog::get_instance()->render_log();
+		ob_end_flush();
 	}
 
 	static public function methodise($method) {
@@ -111,11 +187,20 @@ class MagicApplication {
 
 	public function page_setup(){
 		//$this->page->layout = "index.tpl";
-
+		$this->page_reset();
+		
 		// Initiate Node.JS Backbone
 		$this->page->site->scripts[] = "http://core.turbocrms.com:19658/nowjs/now.js";
 		$this->page->site->scripts[] = "http://core.turbocrms.com:19659/corebar.js";
-
+	}
+	public function page_reset(){
+		$this->page->site->scripts = array();
+		$this->page->site->csses = array();
+		$this->page->site->jses = array();
+		$this->page->template = null;
+		$this->page->layout = null;
+		//print_r($this->page);
+		
 	}
 	protected function setup() {
 		MagicLogger::init();
