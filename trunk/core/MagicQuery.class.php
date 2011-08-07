@@ -23,6 +23,7 @@
         private $order = null;
         private $limit;
         private $group;
+        private $having;
         public $rows_affected;
         private $column_to_key_by = null;
 
@@ -57,6 +58,11 @@
         public function setGroup ($group) {
             $this->group = $group;
             return $this;
+        }
+        
+        public function setHaving ($having){
+        	$this->having = $having;
+        	return $this;
         }
 
         public function setAction ($action) {
@@ -217,9 +223,13 @@
             //MySQL Order
             if ($this->order == '') {
             } elseif ($this->order === null) {
-                $sql .= "ORDER BY " . $this->get_table_alias($this->tables[0]) . ".constructedat DESC";
+                $sql .= "ORDER BY " . $this->get_table_alias($this->tables[0]) . ".constructedat DESC \n";
             } else {
-                $sql .= "ORDER BY " . $this->order;
+                $sql .= "ORDER BY " . $this->order ."\n";
+            }
+            //MySQL Having
+            if($this->having != ''){
+            	$sql .= "HAVING {$this->having}\n";
             }
             //MySQL Limit
             if ($this->limit) {
