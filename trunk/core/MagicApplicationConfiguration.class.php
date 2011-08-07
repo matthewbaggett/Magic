@@ -65,7 +65,7 @@ class MagicApplicationConfiguration extends MagicSingleton
         $config = spyc::YAMLLoad($application_config_file_generic);
         //If there is an available set of local config for this machine, overload the base config with it
         if (file_exists($application_config_file_specific)) {
-            MagicLogger::log("Using specific config $application_config_file_specific rather than the default");
+            //MagicLogger::log("Using specific config $application_config_file_specific rather than the default");
             $config = array_merge((array)$config, (array)spyc::YAMLLoad($application_config_file_specific));
         }
         return $config;

@@ -25,12 +25,12 @@
             if(count(MagicApplication::$config->raw['Plugins']) > 0){
 	            foreach(MagicApplication::$config->raw['Plugins'] as $plugin_name => $plugin_parameters){
 	               $plugin_object_map_file = ROOT . "/plugins/{$plugin_name}/objects.definition.yml";
-	               MagicLogger::log($plugin_object_map_file,"Plugin {$plugin_name} map file");
+	               //MagicLogger::log($plugin_object_map_file,"Plugin {$plugin_name} map file");
 	               if(file_exists($plugin_object_map_file)){
 	                  $plugin_object_map = (array) Spyc::YAMLLoad($plugin_object_map_file);
 	                  $this->object_map = array_merge_recursive($this->object_map,$plugin_object_map);
 	               }else{
-	                  MagicLogger::log("Couldn't load object.definition.yml for {$plugin_name}");
+	                  //MagicLogger::log("Couldn't load object.definition.yml for {$plugin_name}");
 	               }
 	            }
             }

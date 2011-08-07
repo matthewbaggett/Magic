@@ -28,24 +28,26 @@ class MagicApplication {
 	}
 	
 	private function checkCacheGet(){
+		$cache_path = $this->cachePath();
+		
 		// Do we have a cached version?
-		if(!file_exists($this->cachePath())){
-			MagicLogger::log("No cache file exists at {$this->cachePath()}.");
+		if(!file_exists($cache_path)){
+			MagicLogger::log("No cache file exists at {$cache_path}.");
 			return FALSE;
 		}
 		// Has the cached file expired?
-		if(filemtime($this->cachePath()) < strtotime('1 hour ago')){
-			MagicLogger::log("File at {$this->cachePath()} too old.");
+		if(filemtime($cache_path) < strtotime('1 hour ago')){
+			MagicLogger::log("File at {$cache_path} too old.");
 			return FALSE;
 		}
 		// No caching if the user is logged in.
 		if($this->checkCacheGetHasUser()){
-			MagicLogger::log("User is logged in, not serving cached file {$this->cachePath()}");
+			MagicLogger::log("User is logged in, not serving cached file {$cache_path}");
 			return FALSE;
 		}
 		// No caching if there is a POST operation going on
 		if(count($_POST) > 0){
-			MagicLogger::log("Request is a POST, not serving {$this->cachePath()}");
+			MagicLogger::log("Request is a POST, not serving {$cache_path}");
 			return FALSE;
 		}
 		// None of the above true? We can served a cached file.
@@ -53,16 +55,21 @@ class MagicApplication {
 	}
 	
 	private function checkCachePut(){
+		$cache_path = $this->cachePath();
+		
 		// No caching if the user is logged in.
 		if($this->checkCacheGetHasUser()){
-			MagicLogger::log("User is logged in, not serving cached file {$this->cachePath()}");
+			MagicLogger::log("User is logged in, not SAVING cached file {$cache_path}");
 			return FALSE;
 		}
 		// No caching if there is a POST operation going on
 		if(count($_POST) > 0){
-			MagicLogger::log("Request is a POST, not serving {$this->cachePath()}");
+			MagicLogger::log("Request is a POST, not SAVING {$cache_path}");
 			return FALSE;
 		}
+		
+		// If all clear...
+		return TRUE;
 	}
 
 	private function checkCacheGetHasUser(){
@@ -75,16 +82,20 @@ class MagicApplication {
 	}
 	
 	private function cacheHit(){
-		MagicLogger::log("Cache Hit :)");
-		echo file_get_contents($this->cachePath());
-		die("<!-- Read from cache at " . date("Y/m/d H:i:s") . "-->\n");
+		$cache_path = $this->cachePath();
+		MagicLogger::log("Cache Hit :) - {$cache_path}");
+		echo file_get_contents($cache_path);
+		die("<!-- Read from cache at " . date("Y/m/d H:i:s") . " {$cache_path} -->\n");
 	}
 	
 	public function cachePut($buffer){
-		if($this->checkCachePut()){
+		if($this->checkCachePut() && strlen(trim($buffer)) > 0){
 			$buffer = $buffer . "\n<!-- Cache PUT at " . date("Y/m/d H:i:s") . "-->\n";
-			@mkdir(dirname($this->cachePath()));
+			mkdir(dirname($this->cachePath()),0777,true);
 			file_put_contents($this->cachePath(), $buffer);
+			MagicLogger::log("Logged to file: {$this->cachePath()}");
+		}else{
+			MagicLogger::log("Disallowed from writing cache file");
 		}
 		return $buffer;
 	}
