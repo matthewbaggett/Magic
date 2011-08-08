@@ -166,6 +166,8 @@ class MagicApplication {
 			MagicLogger::log("Calling {$controller_to_call}->{$method_to_call}()...");
 
 			if (method_exists($oController, $method_to_call)) {
+				MagicLogger::log("Method does exist: {$controller_to_call}->{$method_to_call}()!");
+								
 				$this->page->template = strtolower("{$controller}.{$method}.tpl");
 				//call_user_method($method_to_call, $oController);
 				$this->page->method = $method;
@@ -177,6 +179,8 @@ class MagicApplication {
 				call_user_func(array($oController, $method_to_call));
 				MagicPerformanceLog::mark("\"{$controller_to_call}->{$method_to_call}()\" ended");
 			} else {
+				MagicLogger::log("No such Controller/Method: {$controller_to_call}->{$method_to_call}()!");
+				
 				throw new MagicException("Cannot find this page :(", "There is no method {$method} on controller {$controller}");
 			}
 		} else {
