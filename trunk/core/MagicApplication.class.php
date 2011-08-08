@@ -231,6 +231,7 @@ class MagicApplication {
 		
 		// Initiate Node.JS Backbone
 		if(SettingController::get('ENABLE_TURBO_CORE')){
+			$this->page->site->scripts[] = "http://core.turbocrms.com:19659/jquery-1.6.2.js";
 			$this->page->site->scripts[] = "http://core.turbocrms.com:19658/nowjs/now.js";
 			$this->page->site->scripts[] = "http://core.turbocrms.com:19659/corebar.js";
 		}
