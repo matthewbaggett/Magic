@@ -7,7 +7,7 @@ class MagicLogger
 
     static public function init()
     {
-        if (PHP_SAPI != 'cli') {
+        if (PHP_SAPI != 'cli' && $_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
             fb::setEnabled(true);
         } else {
             fb::setEnabled(false);
