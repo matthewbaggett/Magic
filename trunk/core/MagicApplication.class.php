@@ -178,6 +178,8 @@ class MagicApplication {
 				MagicPerformanceLog::mark("Call function \"{$controller_to_call}->{$method_to_call}()\"");
 				call_user_func(array($oController, $method_to_call));
 				MagicPerformanceLog::mark("\"{$controller_to_call}->{$method_to_call}()\" ended");
+				MagicLogger::log("Routing complete");
+				
 			} else {
 				MagicLogger::log("No such Controller/Method: {$controller_to_call}->{$method_to_call}()!");
 				
