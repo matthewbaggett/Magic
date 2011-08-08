@@ -75,8 +75,8 @@
             return $this;
         }
 
-        public function addJoin ($table_a, $column_a, $table_b, $column_b) {
-            $this->joins[] = array("table A" => $table_a, "column A" => $column_a, "table B" => $table_b, "column B" => $column_b);
+        public function addJoin ($table_a, $column_a, $table_b, $column_b,$type = "NORMAL") {
+            $this->joins[] = array("type" => $type, "table A" => $table_a, "column A" => $column_a, "table B" => $table_b, "column B" => $column_b);
             return $this;
         }
 
@@ -235,6 +235,7 @@
             if ($this->limit) {
                 $sql .= "\nLIMIT {$this->limit}";
             }
+            
             return $sql;
         }
 
