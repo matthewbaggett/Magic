@@ -242,8 +242,6 @@ class MagicApplication {
 		$this->page->site->jses = array();
 		$this->page->template = null;
 		$this->page->layout = null;
-		//print_r($this->page);
-		
 	}
 	protected function setup() {
 		MagicLogger::init();
