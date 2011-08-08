@@ -20,6 +20,11 @@
 
 class UserCoreController extends UserBaseController {
 
+	public function logoutAction(){
+		unset($_SESSION['user']);
+		session_destroy();
+		MagicUtils::redirect("Users","Login");
+	}
 	public function loginAction(){
 		if(count($_POST) > 0){
 			$oUser = self::login($_POST['username'],$_POST['password']);
