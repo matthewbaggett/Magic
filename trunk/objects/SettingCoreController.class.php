@@ -26,6 +26,10 @@ class SettingCoreController extends SettingBaseController {
 	 */
 	static public function get($name){
 		$setting = SettingSearcher::Factory()->search_by_system_name($name)->execute_one();
-		return $setting->get_value();
+		if($setting != null){
+			return $setting->get_value();
+		}else{
+			return null;
+		}
 	}
 }
