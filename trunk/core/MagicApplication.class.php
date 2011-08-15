@@ -134,6 +134,8 @@ class MagicApplication {
 		if(PHP_SAPI != 'cli'){
 			session_start();
 			set_time_limit(90);
+		}else{
+			self::$actionlog = false;
 		}
 		$this->time_startup = microtime(true);
 		
