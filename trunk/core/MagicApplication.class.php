@@ -10,6 +10,7 @@ class MagicApplication {
 	public $database;
 	public $app_root;
 	static public $nocache = false;
+	static public $actionlog = true;
 
 	private $time_startup;
 
@@ -146,6 +147,12 @@ class MagicApplication {
 				die("Sorry, cannot boot. I have no configuration.\n");
 			}
 			MagicDB::$database = MagicDatabase::Factory()->boot(self::$config->database);
+		}
+		
+		if(SettingController::get("ACTIONLOG_ENABLED") == 1){
+			self::$actionlog = true;
+		}else{
+			self::$actionlog = false;
 		}
 	}
 

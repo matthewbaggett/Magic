@@ -32,7 +32,7 @@ class <?= $this->name ?>ActionLogger extends MagicActionLogger implements MagicA
    }
 
    public function save($force_save = false){
-        if($this->before != $this->after || $force_save == true){
+        if(($this->before != $this->after || $force_save == true) && Application::$actionlog == true){
             parent::save($force_save);
             return true;
         }else{

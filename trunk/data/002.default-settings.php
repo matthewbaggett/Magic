@@ -1,5 +1,14 @@
 <?php
 
+if (SettingSearcher::Factory()->search_by_system_name('ACTIONLOG_ENABLED')->count() == 0){
+	Setting::Factory()
+            ->set_system_name("ACTIONLOG_ENABLED")
+            ->set_public_name("Actionlog Enabled")
+            ->set_default_value('1')
+            ->set_value('1')
+            ->save();
+}
+
 if (SettingSearcher::Factory()->search_by_system_name("SITE_NAME")->count() == 0) {
     Setting::Factory()
             ->set_system_name("SITE_NAME")
