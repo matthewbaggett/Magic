@@ -4,6 +4,9 @@ class MagicActionLogger extends MagicObject
 
     public function save($force_save = false)
     {
+    	if(Application::$actionlog !== true){
+    		return FALSE;
+    	}
         if ($_SESSION['user']) {
             $user_id = $_SESSION['user']->get_id();
         } else {
@@ -16,7 +19,7 @@ class MagicActionLogger extends MagicObject
                 ->addSet("after", $this->after)
                 ->addSet("user_id", $user_id)
                 ->addSet("timestamp",time());
-        //echo "doonk\n";
+        //echo "doonk\n";Application::$actionlog == true
         //echo $log_query->query();
         $log_query->execute();
    }

@@ -138,7 +138,7 @@ class MagicApplication {
 		$this->time_startup = microtime(true);
 		
 		//Initialisation complete
-		if(1==1 && $this->checkCacheGet()){
+		if($this->checkCacheGet()){
 			$this->cacheHit();
 		}else{
 			$this->app_root = MagicApplicationConfiguration::Factory()->app_root;
@@ -147,13 +147,14 @@ class MagicApplication {
 				die("Sorry, cannot boot. I have no configuration.\n");
 			}
 			MagicDB::$database = MagicDatabase::Factory()->boot(self::$config->database);
+		
+			if(SettingController::get("ACTIONLOG_ENABLED") == 1){
+				self::$actionlog = true;
+			}else{
+				self::$actionlog = false;
+			}
 		}
 		
-		if(SettingController::get("ACTIONLOG_ENABLED") == 1){
-			self::$actionlog = true;
-		}else{
-			self::$actionlog = false;
-		}
 	}
 
 	public function routing() {
