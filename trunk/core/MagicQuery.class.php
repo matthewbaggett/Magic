@@ -181,7 +181,7 @@
                     $whereSQL[] = "{$join['table A']}.`{$join['column A']}` = {$join['table B']}.`{$join['column B']}`";
                 }
             }
-            //Start generating sql.
+            // Start generating sql.
             $sql = "SELECT \n";
             if (count($this->columns) == 0) {
                 $sql .= "\t*\n";
@@ -216,22 +216,23 @@
             if (count($whereSQL) > 0) {
                 $sql .= "WHERE\n\t" . implode(" \n\tAND ", $whereSQL) . "\n";
             }
-            //MySQL Group
+            // MySQL Group
             if ($this->group) {
                 $sql .= "\nGROUP BY {$this->group}\n";
             }
-            //MySQL Order
+        	// MySQL Having
+            if($this->having != ''){
+            	$sql .= "HAVING {$this->having}\n";
+            }
+            // MySQL Order
             if ($this->order == '') {
             } elseif ($this->order === null) {
                 $sql .= "ORDER BY " . $this->get_table_alias($this->tables[0]) . ".constructedat DESC \n";
             } else {
                 $sql .= "ORDER BY " . $this->order ."\n";
             }
-            //MySQL Having
-            if($this->having != ''){
-            	$sql .= "HAVING {$this->having}\n";
-            }
-            //MySQL Limit
+            
+            // MySQL Limit
             if ($this->limit) {
                 $sql .= "\nLIMIT {$this->limit}";
             }
