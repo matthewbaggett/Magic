@@ -8,11 +8,13 @@ require_once(ROOT . "lib/firephp/fb.php");
 require_once(ROOT . "lib/krumo/class.krumo.php");
 require_once(ROOT . "lib/spyc/spyc.php");
 require_once(ROOT . "lib/smarty/Smarty.class.php");
-require_once(ROOT . "/core/MagicDefines.php");
+
+require_once(ROOT . "core/MagicDefines.php");
+require_once(ROOT . "core/MagicApplication.class.php");
+require_once(ROOT . "core/MagicAutoloader.php");
+require_once(ROOT . "core/MagicException.class.php");
 require_once(ROOT . "core/PHP5.2_compat.class.php");
 require_once(ROOT . "core/MagicCache.class.php");
-require_once(ROOT . "core/MagicAutoloader.php");
-require_once(ROOT . "core/MagicApplication.class.php");
 require_once(ROOT . "core/MagicUtils.class.php");
 
 $core_files = MagicUtils::get_directory_list(ROOT . "/core");

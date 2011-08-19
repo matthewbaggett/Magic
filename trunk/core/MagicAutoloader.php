@@ -11,9 +11,7 @@ class MagicAutoloader
 		spl_autoload_register(array($this, 'loader'));
 	}
 
-	private function loader ($class_name)
-	{
-
+	private function loader ($class_name){
 		if (defined("APPNAME")) {
 			$application_path = ROOT . "/application/" . APPNAME . "/objects/{$class_name}.class.php";
 		} else {

@@ -139,17 +139,25 @@ class MagicApplication {
 		}
 		$this->time_startup = microtime(true);
 		
-		//Initialisation complete
+		// Initialisation complete
+		
+		// Check to see if we can hit the cache
 		if($this->checkCacheGet()){
+			// If yes, hit that thang!
 			$this->cacheHit();
 		}else{
+			// If not, generate the page
 			$this->app_root = MagicApplicationConfiguration::Factory()->app_root;
 			MagicPerformanceLog::mark("MagicApplication __construct()");
 			if(self::$config->database === null){
 				die("Sorry, cannot boot. I have no configuration.\n");
 			}
 			MagicDB::$database = MagicDatabase::Factory()->boot(self::$config->database);
-		
+			
+			if(!MagicDB::$database instanceof MagicDatabase){
+				die("Sorry, cannot boot. Could not connect to database.\n");
+			}
+			
 			if(SettingController::get("ACTIONLOG_ENABLED") == 1){
 				self::$actionlog = true;
 			}else{
@@ -482,17 +490,23 @@ class MagicApplication {
 			$pagepainter->assign("trace",$e->getTraceAsString());
 			$pagepainter->assign("environment",print_r($_ENV, true));
 			$pagepainter->assign("mail_instance_id", $mail->get_mail_instance_id());
+
 			if($e instanceof MagicExceptionInterface){
 				$pagepainter->assign('detail',$e->getDetail());
 			}
-			$mail_message = $pagepainter->render("file://" . ROOT ."templates/email/mail.exception.tpl",false);
+			
+			try{
+				$mail_message = $pagepainter->render("file://" . ROOT ."templates/email/mail.exception.tpl",false);
+			}catch(Exception $e){
+				die("Oh god, an exception occoured rendering the EXCEPTION?!?!");
+			}
 
 			$mail->set_subject("Exception: \"{$e->getMessage()}\"")
-			->set_message($mail_message)
-			->set_type(Mail::TYPE_HTML)
-			->add_attachment(MagicLogger::get_log(), "MagicLogger." . time() . ".log")
-			->save()
-			->send();
+				->set_message($mail_message)
+				->set_type(Mail::TYPE_HTML)
+				->add_attachment(MagicLogger::get_log(), "MagicLogger." . time() . ".log")
+				->save()
+				->send();
 		}
 	}
 }

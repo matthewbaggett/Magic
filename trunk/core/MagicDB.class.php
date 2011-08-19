@@ -5,7 +5,11 @@ class MagicDB
 
 	public static function Query ($sql)
 	{
-		return self::$database->query($sql);
+		if(self::$database instanceof MagicDatabase){
+			return self::$database->query($sql);
+		}else{
+			throw new MagicException("Call to MagicDB::Query() before the database connection was instantiated!");
+		}
 	}
 
 	/**
