@@ -13,6 +13,9 @@
         public function get_list_of_objects () {
             return array_keys($this->object_map);
         }
+        public function get_object_schema(){
+        	return $this->object_map;
+        }
 
         public function __construct () {
             $this->object_map = Spyc::YAMLLoad(ROOT . self::OBJECT_DEFINITION_FILE);

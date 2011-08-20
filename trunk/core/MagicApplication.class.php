@@ -9,6 +9,8 @@ class MagicApplication {
 	protected $object_factory;
 	public $database;
 	public $app_root;
+	static public $objects = null;
+	static public $schema = null;
 	static public $nocache = false;
 	static public $actionlog = true;
 
@@ -171,7 +173,19 @@ class MagicApplication {
 		if (isset($_REQUEST['controller']) && isset($_REQUEST['method'])) {
 			$controller = $_REQUEST['controller'];
 			// Experimental: singularise the controller
-			$controller = Inflect::singularize($controller);
+			
+			// Decide if there is a controller named like this...
+			if(class_exists($controller."Controller")){
+				$controller_to_call = $controller."Controller";	
+			}else{
+				$controller_singular = Inflect::singularize($controller);
+				if(!class_exists($controller_singular."Controller")){
+					$controller_to_call = $controller_singular."Controller";
+				}else{
+					throw new exception("Cannot find a controller that matches either \"{$controller}\" or \"{$controller_singular}\". D: ");
+				}
+			}
+			
 			$controller_to_call = $controller . "Controller";
 			$method = $_REQUEST['method'];
 			if(!strlen(trim($method)) > 0){
@@ -275,6 +289,8 @@ class MagicApplication {
 		
 		$this->object_factory = new MagicObjectFactory();
 		$this->object_factory->check();
+		self::$objects = $this->object_factory->get_list_of_objects();
+		self::$schema = $this->object_factory->get_object_schema();
 
 		$this->painter = MagicPagePainter::Factory();
 		self::$settings = SettingSearcher::Factory()->execute();
@@ -282,6 +298,7 @@ class MagicApplication {
 		$this->page->site->template_root = ROOT . "template/";
 		$this->page->site->app_root = $this->app_root;
 		$this->page->site->sys_root = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
+		$this->page->server = $_SERVER;
 			
 	}
 
