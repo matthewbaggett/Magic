@@ -17,6 +17,7 @@ class MagicAutoloader
 		} else {
 			$application_path = '';
 		}
+		
 		//Merge in the plugin maps
 		foreach((array) MagicApplication::$config->raw['Plugins'] as $plugin_name => $plugin_parameters){
 			$plugin_paths[] = ROOT . "/plugins/{$plugin_name}/objects/{$class_name}.class.php";
@@ -33,7 +34,6 @@ class MagicAutoloader
 		//Load from plugins
 		if(!$path_to_require){
 			if(count($plugin_paths) > 0){
-				
 				foreach($plugin_paths as $plugin_path){
 					if(!$path_to_require && file_exists($plugin_path)){
 						$path_to_require = $plugin_path;
@@ -60,6 +60,7 @@ class MagicAutoloader
 		if(!$path_to_require){
 			//print_r($this->class_map);
 			//die("arrrgh");
+			return false;
 			throw new MagicException(
 					"Class '{$class_name}' cannot be found in this application.\n" .
 					"I've looked in the following locations: \n" .

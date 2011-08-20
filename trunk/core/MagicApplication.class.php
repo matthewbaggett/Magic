@@ -172,21 +172,20 @@ class MagicApplication {
 	public function routing() {
 		if (isset($_REQUEST['controller']) && isset($_REQUEST['method'])) {
 			$controller = $_REQUEST['controller'];
-			// Experimental: singularise the controller
 			
+			// Experimental: singularise the controller
+			$controller_singular = Inflect::singularize($controller) . "Controller";
+			$controller_plural   = Inflect::pluralize($controller)   . "Controller";
+
 			// Decide if there is a controller named like this...
-			if(class_exists($controller."Controller")){
-				$controller_to_call = $controller."Controller";	
+			if(class_exists($controller_plural, true)){
+				$controller_to_call = $controller_plural;
+			}elseif(class_exists($controller_singular, true)){
+				$controller_to_call = $controller_singular;
 			}else{
-				$controller_singular = Inflect::singularize($controller);
-				if(!class_exists($controller_singular."Controller")){
-					$controller_to_call = $controller_singular."Controller";
-				}else{
-					throw new exception("Cannot find a controller that matches either \"{$controller}\" or \"{$controller_singular}\". D: ");
-				}
+				throw new exception("Cannot find a controller that matches either \"{$controller_plural}\" or \"{$controller_singular}\". D: ");
 			}
 			
-			$controller_to_call = $controller . "Controller";
 			$method = $_REQUEST['method'];
 			if(!strlen(trim($method)) > 0){
 				$method = 'default';
@@ -200,7 +199,7 @@ class MagicApplication {
 			if (method_exists($oController, $method_to_call)) {
 				MagicLogger::log("Method does exist: {$controller_to_call}->{$method_to_call}()!");
 								
-				$this->page->template = strtolower("{$controller}.{$method}.tpl");
+				$this->page->template = strtolower(Inflect::singularize($controller).".{$method}.tpl");
 				//call_user_method($method_to_call, $oController);
 				$this->page->method = $method;
 				$this->page->controller = $controller;
@@ -477,7 +476,6 @@ class MagicApplication {
 		if (!$no_cli) {
 			MagicApplication::exception_handler_cli($e);
 		}
-
 		require_once(ROOT . "application/Exception/exception.php");
 	}
 
