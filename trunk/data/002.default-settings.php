@@ -188,3 +188,11 @@ if (SettingSearcher::Factory()->search_by_system_name("ENABLE_HTML_CACHE")->coun
             ->save();
 }
 
+if (SettingSearcher::Factory()->search_by_system_name("LATE_LOAD_SCRIPTS")->count() == 0) {
+    Setting::Factory()
+            ->set_system_name("LATE_LOAD_SCRIPTS")
+            ->set_public_name("Should page's JS be late loaded? (IE: End of the page)")
+            ->set_default_value(1)
+            ->set_value(1)
+            ->save();
+}
