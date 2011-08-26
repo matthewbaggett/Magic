@@ -379,9 +379,11 @@ class MagicApplication {
 	}
 	
 	public function page_setup_specific(){
-		$this->page->site->scripts[] = $this->page->site->sys_root . "/plugins/cms/resources/js/" . $this->page->route->controller . "." . $this->page->route->method . ".js";
-		
-		die();
+		$filename = $this->page->route->controller . "." . $this->page->route->method . ".js";
+		$filepath = "/plugins/cms/resources/js/" . $filename;
+		if(file_exists(ROOT . $filepath)){
+			$this->page->site->scripts[] = $this->page->site->sys_root . $filepath;
+		}
 	}
 	
 	public function page_reset(){
