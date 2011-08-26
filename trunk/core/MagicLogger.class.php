@@ -1,4 +1,5 @@
 <?php 
+fb::setEnabled(false);
 class MagicLogger
 {
     public static $cli_offset;
