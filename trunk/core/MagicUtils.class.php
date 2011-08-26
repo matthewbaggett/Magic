@@ -430,5 +430,15 @@ class MagicUtils
 	
 	  return $output;
 	 }
+	 
+	 static public function Abbreviate($number){
+	 	if($number > 1000000){
+	 		return round($number / 1000000,2)." Mil";
+	 	}elseif($number > 1000){
+	 		return round($number / 1000000,2)." Thou";
+	 	}else{
+	 		return '';
+	 	}
+	 }
     
 }

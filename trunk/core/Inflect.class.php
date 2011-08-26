@@ -104,6 +104,7 @@
 
 		public static function pluralize ($string)
 		{
+			$original_string = $string;
 			// save some time in the case that singular and plural are the same
 			if (in_array(strtolower($string), self::$uncountable))
 				return $string;
@@ -120,11 +121,16 @@
 				if (preg_match($pattern, $string))
 					return preg_replace($pattern, $result, $string);
 			}
-			return $string;
+			if(strcasecmp($string, $original_string)){
+				return $original_string;
+			}else{
+				return $string;
+			}
 		}
 
 		public static function singularize ($string)
 		{
+			$original_string = $string;
 			// save some time in the case that singular and plural are the same
 			if (in_array(strtolower($string), self::$uncountable))
 				return $string;
@@ -141,7 +147,11 @@
 				if (preg_match($pattern, $string))
 					return preg_replace($pattern, $result, $string);
 			}
-			return $string;
+			if(strcasecmp($string, $original_string)){
+				return $original_string;
+			}else{
+				return $string;
+			}
 		}
 
 		public static function pluralize_if ($count, $string)
