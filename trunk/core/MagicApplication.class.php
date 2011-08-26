@@ -305,11 +305,10 @@ class MagicApplication {
 			$path = "unknown_path";
 		}
 		$oThisView = View::Factory()
+			->set_visitor($oVisitor->get_id())
 			->set_path($path)
 			->set_accesstime(time())
 			->save();
-		
-		
 		
 		/**
 		 * ROUTING PHASE
