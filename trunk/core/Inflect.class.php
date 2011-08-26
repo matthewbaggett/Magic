@@ -102,9 +102,9 @@
 			'equipment'
 		);
 
-		public static function pluralize ($string)
+		public static function pluralize ($original_string)
 		{
-			$original_string = $string;
+			$string = $original_string;
 			// save some time in the case that singular and plural are the same
 			if (in_array(strtolower($string), self::$uncountable))
 				return $string;
@@ -128,9 +128,9 @@
 			}
 		}
 
-		public static function singularize ($string)
+		public static function singularize ($original_string)
 		{
-			$original_string = $string;
+			$string = $original_string;
 			// save some time in the case that singular and plural are the same
 			if (in_array(strtolower($string), self::$uncountable))
 				return $string;
