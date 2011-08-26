@@ -230,6 +230,9 @@ class MagicApplication {
 				call_user_func(array($oController, $method_to_call));
 				MagicPerformanceLog::mark("\"{$controller_to_call}->{$method_to_call}()\" ended");
 				MagicLogger::log("Routing complete");
+				$this->page->route = new stdClass();
+				$this->page->route->controller = strtolower($controller);
+				$this->page->route->method = strtolower($method);
 				
 			} else {
 				MagicLogger::log("No such Controller/Method: {$controller_to_call}->{$method_to_call}()!");
@@ -264,6 +267,50 @@ class MagicApplication {
 		/**
 		 * ANALYTICS PHASE
 		 */
+		$this->request_analytics();
+		
+		/**
+		 * ROUTING PHASE
+		 * 
+		 * All of the heavy lifting and application code is executed in this phase.
+		 */
+		MagicPerformanceLog::mark("pre routing()");
+		$this->routing();
+		MagicPerformanceLog::mark("post routing()");
+		
+		// Push some useful things ifnto the page's painter...
+		$app_instance = MagicApplication::GetInstance();
+		$app_instance->page_setup_specific();
+		
+		$this->page->query_log = MagicDatabase::$log;
+		$this->painter->assign("page", $this->page);
+		$this->painter->assign("time_at_execute_start", $this->time_startup);
+		$this->painter->assign("time_at_execute_end", microtime(true));
+		
+		/**
+		 * RENDER PHASE
+		 */
+		// Call the renderer...
+		MagicPerformanceLog::mark("Smarty Render Called");
+		// Work out which renderer mode to use...
+		if ($this->page->layout) {
+			$this->painter->render($this->page->layout);
+		} elseif ($this->page->template) {
+			$this->painter->render($this->page->template);
+		} else {
+			$this->painter->render();
+		}
+		// Render complete.
+		MagicPerformanceLog::mark("Smarty Render Completed");
+		// Spit out the generated time...
+		echo "\n<!-- Generated at " . date('l jS \of F Y h:i:s A') . "-->\n";
+		// Spit out the performance log...
+		MagicPerformanceLog::get_instance()->render_log();
+		// Flush into cache and pump to the user.
+		ob_end_flush();
+	}
+	
+	private function request_analytics(){
 		// Check that the magic_id is valid:
 		$cookie_is_valid = true;
 		if(isset($_COOKIE['magic_id'])){
@@ -293,9 +340,7 @@ class MagicApplication {
 				->search_by_id(base_convert($_COOKIE['magic_id'], 36,10))
 				->execute_one();
 		}
-			
 		
-			
 		$oVisitor = Visitor::Cast($oVisitor);
 		if(isset($_SERVER['REDIRECT_URL'])){
 			$path = $_SERVER['REDIRECT_URL'];
@@ -309,43 +354,6 @@ class MagicApplication {
 			->set_path($path)
 			->set_accesstime(time())
 			->save();
-		
-		/**
-		 * ROUTING PHASE
-		 * 
-		 * All of the heavy lifting and application code is executed in this phase.
-		 */
-		MagicPerformanceLog::mark("pre routing()");
-		$this->routing();
-		MagicPerformanceLog::mark("post routing()");
-		
-		// Push some useful things into the page's painter...
-		$this->page->query_log = MagicDatabase::$log;
-		$this->painter->assign("page", $this->page);
-		$this->painter->assign("time_at_execute_start", $this->time_startup);
-		$this->painter->assign("time_at_execute_end", microtime(true));
-		
-		/**
-		 * RENDER PHASE
-		 */
-		// Call the renderer...
-		MagicPerformanceLog::mark("Smarty Render Called");
-		// Work out which renderer mode to use...
-		if ($this->page->layout) {
-			$this->painter->render($this->page->layout);
-		} elseif ($this->page->template) {
-			$this->painter->render($this->page->template);
-		} else {
-			$this->painter->render();
-		}
-		// Render complete.
-		MagicPerformanceLog::mark("Smarty Render Completed");
-		// Spit out the generated time...
-		echo "\n<!-- Generated at " . date('l jS \of F Y h:i:s A') . "-->\n";
-		// Spit out the performance log...
-		MagicPerformanceLog::get_instance()->render_log();
-		// Flush into cache and pump to the user.
-		ob_end_flush();
 	}
 
 	static public function methodise($method) {
@@ -367,6 +375,13 @@ class MagicApplication {
 			$this->page->site->scripts[] = "http://core.turbocrms.com:19658/nowjs/now.js";
 			$this->page->site->scripts[] = "http://core.turbocrms.com:19659/corebar.js";
 		}
+		
+	}
+	
+	public function page_setup_specific(){
+		$this->page->site->scripts[] = $this->page->site->sys_root . "/plugins/cms/resources/js/" . $this->page->route->controller . "." . $this->page->route->method . ".js";
+		
+		die();
 	}
 	
 	public function page_reset(){
