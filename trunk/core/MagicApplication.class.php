@@ -289,12 +289,12 @@ class MagicApplication {
 
 		// Load their Visitor record...
 		if($oVisitor === null){
-			$oVisitorSearcher = VisitorSearcher::Factory()
+			$oVisitor = VisitorSearcher::Factory()
 				->search_by_id(base_convert($_COOKIE['magic_id'], 36,10))
 				->execute_one();
 		}
 			
-		$oVisitor = $oVisitorSearcher->execute_one();
+		
 			
 		$oVisitor = Visitor::Cast($oVisitor);
 		if(isset($_SERVER['REDIRECT_URL'])){
