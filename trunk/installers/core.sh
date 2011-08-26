@@ -14,3 +14,5 @@ echo "Checking out plugins/GoogleChartAPI..."
 svn co http://svn.turbocrms.com/magicplugins/googlechartapi/trunk/ ./plugins/googlechartapi
 echo "Checking out plugins/FederatedLogin..."
 svn co http://svn.turbocrms.com/magicplugins/federatedlogin/trunk/ ./plugins/federatedlogin
+echo "Checking out plugins/blog..."
+svn co http://svn.turbocrms.com/magicplugins/blog/trunk/ ./plugins/blog
