@@ -1,6 +1,7 @@
 <?php 
 class SEOController extends MagicBaseController{
 	public function robotsAction(){
+		Application::$nocache = true;
 		header("Content-type: text/plain");
 		echo "User-agent: *\n";
 		echo "Disallow: /js/\n";
