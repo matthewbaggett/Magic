@@ -242,25 +242,69 @@ class MagicApplication {
 	}
 
 	public function route() {
-		
+		// Start the buffer...
 		ob_start(array($this,'cachePut'));
+		
+		/**
+		 * CANONICALISE STAGE
+		 */
+		// Check to see if Canonicalisation is enabled.. Usually is!
 		if(SettingController::get("CANONICALISATION_ENABLED") == 1){
+			// Check to see if we SHOULD canonicalise...
 			if(MagicUtils::canonicalisationAppropriate()){
 				MagicPerformanceLog::mark("Canonicalising");
+				// Check to see if the canonical URL matches THIS request.
 				if(MagicUtils::canonical() != MagicUtils::thisurl()){
+					// If it doesn't, redirect!
 					MagicUtils::canonicalise();
 				}
 			}
 		}
+		
+		/**
+		 * ANALYTICS PHASE
+		 */
+		// Give the user a magic_id if they've not got one.
+		if(!isset($_COOKIE['magic_id'])){
+			//Look for Visitors from this location before...
+			$oVisitor = VisitorSearcher::Factory()->search_by_ip($_SERVER['REMOTE_ADDR'])->execute_one();
+			if($oVisitor === false){
+				$oVisitor = Visitor::Factory()
+					->set_ip($_SERVER['REMOTE_ADDR'])
+					->save();
+			}
+			$oVisitor = Visitor::Cast($oVisitor);
+			$time_to_expire = strtotime("now + 4 weeks");
+			setcookie("magic_id", $oVisitor->get_id36(), $time_to_expire,"/");
+		}
+		// Load their Visitor record
+		$oVisitor = VisitorSearcher::Factory()->search_by_id(base_convert($_COOKIE['magic_id'], 36,10))->execute_one();
+		$oVisitor = Visitor::Cast($oVisitor);
+		print_r($oVisitor);
+		die(":)");
+		
+		
+		/**
+		 * ROUTING PHASE
+		 * 
+		 * All of the heavy lifting and application code is executed in this phase.
+		 */
 		MagicPerformanceLog::mark("pre routing()");
 		$this->routing();
 		MagicPerformanceLog::mark("post routing()");
+		
+		// Push some useful things into the page's painter...
 		$this->page->query_log = MagicDatabase::$log;
 		$this->painter->assign("page", $this->page);
 		$this->painter->assign("time_at_execute_start", $this->time_startup);
 		$this->painter->assign("time_at_execute_end", microtime(true));
+		
+		/**
+		 * RENDER PHASE
+		 */
+		// Call the renderer...
 		MagicPerformanceLog::mark("Smarty Render Called");
-		//print_r($this->page);
+		// Work out which renderer mode to use...
 		if ($this->page->layout) {
 			$this->painter->render($this->page->layout);
 		} elseif ($this->page->template) {
@@ -268,13 +312,18 @@ class MagicApplication {
 		} else {
 			$this->painter->render();
 		}
+		// Render complete.
 		MagicPerformanceLog::mark("Smarty Render Completed");
+		// Spit out the generated time...
 		echo "\n<!-- Generated at " . date('l jS \of F Y h:i:s A') . "-->\n";
+		// Spit out the performance log...
 		MagicPerformanceLog::get_instance()->render_log();
+		// Flush into cache and pump to the user.
 		ob_end_flush();
 	}
 
 	static public function methodise($method) {
+		
 		$method = explode("-", $method);
 		foreach ($method as &$method_bit) {
 			$method_bit = ucfirst($method_bit);
@@ -284,7 +333,6 @@ class MagicApplication {
 	}
 
 	public function page_setup(){
-		//$this->page->layout = "index.tpl";
 		$this->page_reset();
 		
 		// Initiate Node.JS Backbone
@@ -294,6 +342,7 @@ class MagicApplication {
 			$this->page->site->scripts[] = "http://core.turbocrms.com:19659/corebar.js";
 		}
 	}
+	
 	public function page_reset(){
 		$this->page->site->scripts = array();
 		$this->page->site->csses = array();
@@ -301,6 +350,7 @@ class MagicApplication {
 		$this->page->template = null;
 		$this->page->layout = null;
 	}
+	
 	protected function setup() {
 		MagicLogger::init();
 		if (FORCE_REGEN) {

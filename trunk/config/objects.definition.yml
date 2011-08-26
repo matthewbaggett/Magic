@@ -177,3 +177,23 @@ Mail:
     type: integer
     length: 5
 
+Visitor:
+  id:
+    key: true
+    type: integer
+    length: 10
+  ip:
+    type: text
+    length: 15
+
+View:
+  id:
+    key: true
+    type: integer
+    length: 10
+  visitor:
+    foreign: Visitor.id
+  path:
+    type: text
+    length: 200
+  
