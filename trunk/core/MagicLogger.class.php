@@ -13,7 +13,6 @@ class MagicLogger
         } else {
             fb::setEnabled(false);
         }
-        #MagicLogger::log("MagicLogger initialised");
     }
 
     static public function log($Object, $Label = null)
@@ -26,10 +25,8 @@ class MagicLogger
         self::$log[] = $log_item;
         error_log(MagicLogger::generate_log_line($log_item));
         if (PHP_SAPI == 'cli') {
-            //echo MagicLogger::generate_log_line($log_item) . "\n";
             return false;
         } else {
-//            echo MagicLogger::generate_log_line($log_item) . "<br />\n";
             return fb::log($Object, $Label);
         }
 

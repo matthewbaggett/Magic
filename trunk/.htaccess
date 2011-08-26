@@ -13,6 +13,10 @@ order allow,deny
 deny from 109.200.20.153
 allow from all
 
+ExpiresDefault "access plus 1 week"
+ExpiresByType image/* "access plus 6 months"
+
+
 RewriteEngine on
 
 RewriteCond %{REQUEST_FILENAME} -f [OR]
