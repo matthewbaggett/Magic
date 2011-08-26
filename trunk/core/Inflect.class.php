@@ -121,7 +121,7 @@
 				if (preg_match($pattern, $string))
 					return preg_replace($pattern, $result, $string);
 			}
-			if(strcasecmp($string, $original_string)){
+			if(strtolower($original_string) == strtolower($string)){
 				return $original_string;
 			}else{
 				return $string;
@@ -147,7 +147,7 @@
 				if (preg_match($pattern, $string))
 					return preg_replace($pattern, $result, $string);
 			}
-			if(strcasecmp($string, $original_string)){
+			if(strtolower($original_string) == strtolower($string)){
 				return $original_string;
 			}else{
 				return $string;
