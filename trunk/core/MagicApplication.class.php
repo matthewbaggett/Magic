@@ -124,12 +124,15 @@ class MagicApplication {
 		} else {
 		    header("Last-Modified: $lastmod"); 
 		    header('ETag: "'.$etag.'"');
+		    header("Expires: " . gmdate("D, d M Y H:i:s", strtotime("6 hours from now")) . " GMT");
 		}
 		
 		
 		MagicLogger::log("Cache Hit :) - {$cache_path}");
+		header("MagicCacheRead: Read from cache at " . date("Y/m/d H:i:s") . " {$cache_path}.");
 		echo file_get_contents($cache_path);
-		die("<!-- Read from cache at " . date("Y/m/d H:i:s") . " {$cache_path} -->\n");
+		
+		exit;
 	}
 	
 	public function cachePut($buffer){
