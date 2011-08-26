@@ -110,6 +110,23 @@ class MagicApplication {
 	
 	private function cacheHit(){
 		$cache_path = $this->cachePath();
+		
+		// Prepare ETAG values
+		$lastmod = gmdate('D, d M Y H:i:s \G\M\T',filemtime($cache_path));
+		$etag = sha1($cache_path."-".md5_file($cache_path));
+		
+		// Do we have an ETAG?
+		$ifmod = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? $_SERVER['HTTP_IF_MODIFIED_SINCE'] == $lastmod : null; 
+		$iftag = isset($_SERVER['HTTP_IF_NONE_MATCH']) ? $_SERVER['HTTP_IF_NONE_MATCH'] == $etag : null; 
+		
+		if (($ifmod || $iftag) && ($ifmod !== false && $iftag !== false)) { 
+		    header('HTTP/1.0 304 Not Modified'); 
+		} else {
+		    header("Last-Modified: $lastmod"); 
+		    header('ETag: "'.$etag.'"');
+		}
+		
+		
 		MagicLogger::log("Cache Hit :) - {$cache_path}");
 		echo file_get_contents($cache_path);
 		die("<!-- Read from cache at " . date("Y/m/d H:i:s") . " {$cache_path} -->\n");
@@ -222,6 +239,7 @@ class MagicApplication {
 	}
 
 	public function route() {
+		
 		ob_start(array($this,'cachePut'));
 		if(SettingController::get("CANONICALISATION_ENABLED") == 1){
 			if(MagicUtils::canonicalisationAppropriate()){
