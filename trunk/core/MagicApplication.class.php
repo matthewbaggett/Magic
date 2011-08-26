@@ -264,11 +264,20 @@ class MagicApplication {
 		/**
 		 * ANALYTICS PHASE
 		 */
+		// Check that the magic_id is valid:
+		$cookie_is_valid = true;
+		if(isset($_COOKIE['magic_id'])){
+			if(VisitorSearcher::Factory()->search_by_id(base_convert($_COOKIE['magic_id'], 36,10))->count() == 0){
+				$cookie_is_valid = false;
+			}
+		}
+		#echo "Cookie is " . ($cookie_is_valid?'valid':'not valid');
+		
 		// Give the user a magic_id if they've not got one.
-		if(!isset($_COOKIE['magic_id'])){
+		if(!isset($_COOKIE['magic_id']) || $cookie_is_valid === false){
 			//Look for Visitors from this location before...
 			$oVisitor = VisitorSearcher::Factory()->search_by_ip($_SERVER['REMOTE_ADDR'])->execute_one();
-			if($oVisitor === false){
+			if($oVisitor === false ){
 				$oVisitor = Visitor::Factory()
 					->set_ip($_SERVER['REMOTE_ADDR'])
 					->save();
@@ -277,11 +286,26 @@ class MagicApplication {
 			$time_to_expire = strtotime("now + 4 weeks");
 			setcookie("magic_id", $oVisitor->get_id36(), $time_to_expire,"/");
 		}
-		// Load their Visitor record
-		$oVisitor = VisitorSearcher::Factory()->search_by_id(base_convert($_COOKIE['magic_id'], 36,10))->execute_one();
+
+		// Load their Visitor record...
+		$oVisitorSearcher = VisitorSearcher::Factory()
+			->search_by_id(base_convert($_COOKIE['magic_id'], 36,10));
+			
+		$oVisitor = $oVisitorSearcher->execute_one();
+			
 		$oVisitor = Visitor::Cast($oVisitor);
-		print_r($oVisitor);
-		die(":)");
+		if(isset($_SERVER['REDIRECT_URL'])){
+			$path = $_SERVER['REDIRECT_URL'];
+		}elseif(isset($_SERVER['REQUEST_URI'])){
+			$path = $_SERVER['REQUEST_URI'];
+		}else{
+			$path = "unknown_path";
+		}
+		$oThisView = View::Factory()
+			->set_path($path)
+			->set_accesstime(time())
+			->save();
+		
 		
 		
 		/**

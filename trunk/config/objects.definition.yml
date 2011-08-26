@@ -196,4 +196,5 @@ View:
   path:
     type: text
     length: 200
-  
+  accesstime:
+    type: timestamp
