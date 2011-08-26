@@ -124,7 +124,7 @@ class MagicApplication {
 		} else {
 		    header("Last-Modified: $lastmod"); 
 		    header('ETag: "'.$etag.'"');
-		    header("Expires: " . gmdate("D, d M Y H:i:s", strtotime("6 hours from now")) . " GMT");
+		    header("Expires: " . gmdate("D, d M Y H:i:s", strtotime("6 hours")) . " GMT");
 		}
 		
 		
