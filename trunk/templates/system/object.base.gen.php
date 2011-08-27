@@ -377,14 +377,28 @@ class <?=$this->name?>BaseObject extends MagicObject implements <?=$this->name?>
 
 ?>
     /**
-     * Throws out the parent object. There will only be one.
+     * Throws out the parent <?=$foreign_class?> object. There will only be one.
      * @return <?=$foreign_class?> .
      */
-	public function get_parent_<?=strtolower($foreign_class)?>(){
+	public function get_parent_<?=Inflect::singularize(strtolower($foreign_class))?>(){
         $result = <?=$foreign_class?>Searcher::Factory()
                 ->search_by_<?=$foreign_variable?>($this->get_<?=$variable_name?>())
                 ->execute_one();
+        if(!$result instanceof <?=$foreign_class?>){
+        	throw new exception("get_parent_<?=Inflect::singularize(strtolower($foreign_class))?>() could not find a <?=$foreign_class?> with <?=$foreign_variable?> of {$this->get_<?=$variable_name?>()}.");
+        }
         return <?=$foreign_class?>::Cast($result);
+    }
+    
+    /**
+     * Throws out the parent <?=$foreign_class?> objects. There will be an array of them.
+     * @return Array An array of <?=$foreign_class?> .
+     */
+	public function get_parent_<?=Inflect::pluralize(strtolower($foreign_class))?>(){
+        $result = <?=$foreign_class?>Searcher::Factory()
+                ->search_by_<?=$foreign_variable?>($this->get_<?=$variable_name?>())
+                ->execute();
+        return (array) $result;
     }
 
 <?php
