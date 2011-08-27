@@ -303,7 +303,10 @@ class MagicApplication {
 		// Render complete.
 		MagicPerformanceLog::mark("Smarty Render Completed");
 		// Spit out the generated time...
-		echo "\n<!-- Generated at " . date('l jS \of F Y h:i:s A') . "-->\n";
+		echo "\n<!--";
+		echo "  Generated at " . date('l jS \of F Y h:i:s A')."\n";
+		echo "  Memory peak: ".memory_get_peak_usage(true)." / ".memory_get_peak_usage(false)."\n";	
+		echo "-->\n";
 		// Spit out the performance log...
 		MagicPerformanceLog::get_instance()->render_log();
 		// Flush into cache and pump to the user.
