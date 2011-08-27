@@ -27,7 +27,7 @@ class UserCoreController extends UserBaseController {
 	}
 	public function loginAction(){
 		if(count($_POST) > 0){
-			$oUser = self::login($_POST['username'],$_POST['password']);
+			$oUser = self::login($_POST['username'],$_POST['password']);			
 			if($oUser !== NULL){
 				$this->loginSuccessful();
 			}else{
@@ -47,16 +47,21 @@ class UserCoreController extends UserBaseController {
 
    static public function login($username, $password){
    	
-   	  $login_query_username = UserSearcher::Factory()
+   	  $login_query_username_query = UserSearcher::Factory()
          ->search_by_username($username)
          ->search_by_password(self::hash_password($password))
-	  	 ->search_by_active(User::ACTIVE_ACTIVE)
-	  	 ->execute();
-   	  $login_query_email = UserSearcher::Factory()
+	  	 ->search_by_active(User::ACTIVE_ACTIVE);
+	  	 
+   	  $login_query_email_query = UserSearcher::Factory()
          ->search_by_email($username)
          ->search_by_password(self::hash_password($password))
-	  	 ->search_by_active(User::ACTIVE_ACTIVE)
-	  	 ->execute();
+	  	 ->search_by_active(User::ACTIVE_ACTIVE);
+
+	  // Execute the queries
+	  $login_query_username = $login_query_username_query->execute();
+	  $login_query_email = $login_query_email_query->execute();
+	  
+	  // Work out wtf happened.
    	  $results = array_merge((array) $login_query_username, (array) $login_query_email);   
       if(count($results) == 0){
          //throw new MagicLoginException("Cannot login, password or username does not match");
