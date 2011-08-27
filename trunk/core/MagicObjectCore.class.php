@@ -181,10 +181,8 @@
                         if(method_exists($this,$safe_setter)){
                             call_user_func(array($this,$safe_setter),$value);
                         }else{
-
                             call_user_func(array($this,$setter),$value);
                         }
-                            
                     }catch(Exception $e){
                         MagicApplication::exception_handler_cli($e);
                     }

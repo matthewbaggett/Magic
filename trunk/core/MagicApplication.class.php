@@ -305,7 +305,7 @@ class MagicApplication {
 		// Spit out the generated time...
 		echo "\n<!--";
 		echo "  Generated at " . date('l jS \of F Y h:i:s A')."\n";
-		echo "  Memory peak: ".memory_get_peak_usage(true)." / ".memory_get_peak_usage(false)."\n";	
+		echo "  Memory peak (sys/emalloc): ".floor(memory_get_peak_usage(true)/1024/1024)." M / ".floor(memory_get_peak_usage(false)/1024/1024)." M\n";	
 		echo "-->\n";
 		// Spit out the performance log...
 		MagicPerformanceLog::get_instance()->render_log();
