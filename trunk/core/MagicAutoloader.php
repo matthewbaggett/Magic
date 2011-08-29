@@ -66,7 +66,7 @@ class MagicAutoloader
 		if(!$path_to_require){
 			//print_r($this->class_map);
 			//die("arrrgh");
-			//return false;
+			return false;
 			throw new MagicException(
 					"Class '{$class_name}' cannot be found in this application.\n" .
 					"I've looked in the following locations: \n" .
