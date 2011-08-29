@@ -30,7 +30,7 @@ class MagicAutoloader
 		//Load it from the application
 		if (!empty($application_path) && file_exists($application_path)) {
 			$path_to_require = $application_path;
-			MagicLogger::log("loader: Application");
+			print("loader:  Application");
 		}
 		//Load from plugins
 		if(!$path_to_require){
@@ -38,7 +38,7 @@ class MagicAutoloader
 				foreach($plugin_paths as $plugin_path){
 					if(!$path_to_require && file_exists($plugin_path)){
 						$path_to_require = $plugin_path;
-						MagicLogger::log("loader: Plugin");
+						print("loader:  Plugin");
 					}
 				}
 			}
@@ -46,22 +46,22 @@ class MagicAutoloader
 		//Load from shared objects
 		if (!$path_to_require && file_exists($shared_objects_path)) {
 			$path_to_require = $shared_objects_path;
-			MagicLogger::log("loader: Shared objects");
+			print("loader:  Shared objects");
 		}
 		//Load it from the map
 		if (!$path_to_require && isset($this->class_map[$class_name])) {
 			$path_to_require = ROOT . $this->class_map[$class_name];
-			MagicLogger::log("loader: Map");
+			print("loader:  Map");
 		}
 		//Could it be generated?
 		if (!$path_to_require && file_exists($generated_path)) {
 			$path_to_require = $generated_path;
-			MagicLogger::log("loader: Generated");
+			print("loader:  Generated");
 		}
 		//Last ditch attempt to find the file...
 		if (!$path_to_require && file_exists($core_path)) {
 			$path_to_require = $core_path;
-			MagicLogger::log("loader: Core");
+			print("loader:  Core");
 		}
 		if(!$path_to_require){
 			//print_r($this->class_map);
