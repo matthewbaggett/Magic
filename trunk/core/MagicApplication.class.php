@@ -101,7 +101,7 @@ class MagicApplication {
 
 	private function checkCacheGetHasUser(){
 		if(isset($_SESSION['user'])){
-			if(strlen(trim($_SESSION['user']->get_username())) > 0){
+			if($_SESSION['user']->get_id() > 0){
 				return true;
 			}
 		}
