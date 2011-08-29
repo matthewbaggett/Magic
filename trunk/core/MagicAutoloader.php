@@ -49,10 +49,10 @@ class MagicAutoloader
 			print("loader:  Shared objects");
 		}
 		//Load it from the map
-		if (!$path_to_require && isset($this->class_map[$class_name])) {
-			$path_to_require = ROOT . $this->class_map[$class_name];
-			print("loader:  Map");
-		}
+		//if (!$path_to_require && isset($this->class_map[$class_name])) {
+		//	$path_to_require = ROOT . $this->class_map[$class_name];
+		//	print("loader:  Map");
+		//}
 		//Could it be generated?
 		if (!$path_to_require && file_exists($generated_path)) {
 			$path_to_require = $generated_path;
