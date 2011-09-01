@@ -15,6 +15,7 @@ order allow,deny
 deny from 109.200.20.153
 allow from all
 
+
 <IfModule mod_expires.c>
 	ExpiresActive On
 	ExpiresDefault "access plus 300 seconds"
@@ -31,6 +32,16 @@ RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d 
 RewriteRule .* - [L]
+
+RedirectMatch 404 /config(/|$)
+RedirectMatch 404 /temp(/|$)
+RedirectMatch 404 /template(/|$)
+RedirectMatch 404 /sql(/|$)
+RedirectMatch 404 /gen(/|$)
+RedirectMatch 404 /cron(/|$)
+RedirectMatch 404 /data(/|$)
+RedirectMatch 404 /objects(/|$)
+RedirectMatch 404 /(.*).yml
 
 RewriteRule ^robots.txt$ ./index.php?controller=SEO&method=robots [L]
 RewriteRule ^sitemap.xml$ ./index.php?controller=SEO&method=sitemap [L]
