@@ -180,10 +180,11 @@ class MagicApplication {
 				die("Sorry, cannot boot. Could not connect to database.\n");
 			}
 			
-			if(SettingController::get("ACTIONLOG_ENABLED") == 1){
-				self::$actionlog = true;
-			}else{
-				self::$actionlog = false;
+			self::$actionlog = false;
+			if(class_exists("SettingController")){
+				if(SettingController::get("ACTIONLOG_ENABLED") == 1){
+					self::$actionlog = true;
+				}
 			}
 		}
 		

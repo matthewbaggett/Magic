@@ -19,7 +19,11 @@
 
         public function __construct () {
             $this->object_map = Spyc::YAMLLoad(ROOT . self::OBJECT_DEFINITION_FILE);
-            $this->object_application_map = Spyc::YAMLLoad(ROOT . sprintf(self::OBJECT_DEFINITION_APPLICATION_FILE, APPNAME));
+            if(file_exists(ROOT . sprintf(self::OBJECT_DEFINITION_APPLICATION_FILE, APPNAME))){
+	            $this->object_application_map = Spyc::YAMLLoad(ROOT . sprintf(self::OBJECT_DEFINITION_APPLICATION_FILE, APPNAME));
+            }else{
+            	$this->object_application_map = array();
+            }
 
             //Merge the application maps
             $this->object_map = array_merge_recursive($this->object_map, $this->object_application_map);
