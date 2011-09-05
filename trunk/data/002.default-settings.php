@@ -196,3 +196,23 @@ if (SettingSearcher::Factory()->search_by_system_name("LATE_LOAD_SCRIPTS")->coun
             ->set_value(1)
             ->save();
 }
+
+/*
+ * Available languages
+ */
+if (SettingSearcher::Factory()->search_by_system_name("GOOGLE_TRANSLATE_KEY")->count() == 0) {
+    Setting::Factory()
+            ->set_system_name("GOOGLE_TRANSLATE_KEY")
+            ->set_public_name("API key for Google Translate")
+            ->set_default_value('')
+            ->set_value('')
+            ->save();
+}
+if (SettingSearcher::Factory()->search_by_system_name("AVAILABLE_LANGUAGES")->count() == 0) {
+    Setting::Factory()
+            ->set_system_name("AVAILABLE_LANGUAGES")
+            ->set_public_name("Languages this site supports")
+            ->set_default_value("EN|FR|DE")
+            ->set_value("EN")
+            ->save();
+}

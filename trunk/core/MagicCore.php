@@ -16,6 +16,7 @@ require_once(ROOT . "core/MagicException.class.php");
 require_once(ROOT . "core/PHP5.2_compat.class.php");
 require_once(ROOT . "core/MagicCache.class.php");
 require_once(ROOT . "core/MagicUtils.class.php");
+require_once(ROOT . "core/MagicTranslate.class.php");
 
 $core_files = MagicUtils::get_directory_list(ROOT . "/core");
 foreach ($core_files as $core_file) {

@@ -577,6 +577,10 @@ class MagicApplication {
 		$new_mail->send()->delete();
 		echo "\rSent!\n\n";
 	}
+	
+	public function translateTaskAction(){
+		MagicTranslate::checkForTranslations();
+	}
 
 	public function mailTaskAction() {
 		MagicLogger::log("Getting unsent mails");

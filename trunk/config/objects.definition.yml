@@ -198,3 +198,19 @@ View:
     length: 200
   accesstime:
     type: timestamp
+
+Translation:
+  id:
+    key: true
+    type: integer
+    length: 10
+  english:
+    type: text
+    length: -1
+  german:
+    type: text
+    length: -1
+  french:
+    type: text
+    length: -1
+  
