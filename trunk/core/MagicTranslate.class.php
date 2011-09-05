@@ -3,18 +3,25 @@ class MagicTranslate{
 	const languages = "german|french";
 	const GOOGLE_API_LOCATION = 'https://www.googleapis.com/language/translate/v2';
 	
-	static public function getTranslation($english){
+	static public function getTranslation($original){
+		/*
+		 * Work out what to do with language
+		 */
 		if(isset($_GET['language'])){
+			setcookie("language", $_GET['language'],strtotime("now + 1 week"),"/");
 			$language = $_GET['language'];
+		}elseif(isset($_COOKIE['language'])){
+			$language = $_COOKIE['language'];
 		}else{
 			$language = 'english';
 		}
-		if($language == 'english'){
-			return $english;
-		}
-		$oTranslation = TranslationSearcher::Factory()->search_by_english($english)->execute_one();
+		
+		/*
+		 * Do the translation fetch
+		 */
+		$oTranslation = TranslationSearcher::Factory()->search_by_original($original)->execute_one();
 		if($oTranslation === FALSE){
-			$oTranslation = Translation::Factory()->set_english($english)->save();
+			$oTranslation = Translation::Factory()->set_english($original)->set_original($original)->save();
 		}
 		$oTranslation = Translation::Cast($oTranslation);
 		$method = "get_{$language}";
@@ -22,7 +29,7 @@ class MagicTranslate{
 		if(strlen(trim($translation)) > 0){
 			return $translation;
 		}else{
-			return strtoupper("missing {$language} - ") . $english;
+			return strtoupper("missing {$language} - ") . $original;
 		}
 
 	}
@@ -37,7 +44,7 @@ class MagicTranslate{
 				$scrape = new Scrape(
 					self::GOOGLE_API_LOCATION . 
 					"?key=" . SettingController::get("GOOGLE_TRANSLATE_KEY") . 
-					"&q=" . urlencode($oMissingTranslation->get_english()) .
+					"&q=" . urlencode($oMissingTranslation->get_original()) .
 					"&source=" . "en" .
 					"&target=" . self::mapLanguageToCode($language)
 				);
@@ -45,7 +52,7 @@ class MagicTranslate{
 				$translations = $result->data->translations;
 				if(strlen(trim($translations[0]->translatedText)) > 0){
 					call_user_method("set_{$language}", $oMissingTranslation, $translations[0]->translatedText);
-					echo " > {$oMissingTranslation->get_english()} = {$translations[0]->translatedText}\n";
+					echo " > {$oMissingTranslation->get_original()} = {$translations[0]->translatedText}\n";
 					$oMissingTranslation->save();	
 				}else{
 					print_r($result);
@@ -167,6 +174,22 @@ class MagicTranslate{
 	}
 }
 
-function t($english){
-	return MagicTranslate::getTranslation($english);
+/**
+ * t() is a function to wrap the MagicTranslate stuff into a convienient package for smarty.
+ * @param string $english original input
+ */
+
+function t_smarty_block($params, $content, $template, &$repeat){
+	$translated = MagicTranslate::getTranslation($content);
+	if($params['nodfn']){
+		return $translated;
+	}else{
+		return t_wrap_span($translated,$content);
+	}
+}
+function t_smarty_modifier($content){
+	return t_wrap_span(MagicTranslate::getTranslation($content),$content);
+}
+function t_wrap_span($translated,$content){
+	return '<dfn title="'.$content.'">'.$translated.'</dfn>';
 }

@@ -52,6 +52,10 @@ class MagicPagePainter extends MagicSingleton {
       $this->assign("magic_app_root", 		MagicApplicationConfiguration::Factory()->app_root);
       $this->assign("magic_app_root_base", 	MagicApplicationConfiguration::Factory()->app_root_base);
       
+      $this->smarty->registerPlugin("block","t", "t_smarty_block");
+      $this->smarty->registerPlugin("modifier","translate", "t_smarty_modifier");
+      
+      
    }
 
    public function assign($key, $value) {

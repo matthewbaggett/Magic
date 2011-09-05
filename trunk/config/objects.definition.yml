@@ -204,6 +204,9 @@ Translation:
     key: true
     type: integer
     length: 10
+  original:
+    type: text
+    length: -1
   english:
     type: text
     length: -1
