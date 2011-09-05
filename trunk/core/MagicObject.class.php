@@ -60,4 +60,13 @@ class MagicObject extends MagicObjectCore implements MagicSavableInterface {
    public function get_id36(){
       return base_convert($this->get_id(),10,36);
    }
+   
+   public function get_named_column($column){
+      $function_to_call = "get_{$column}";
+      if(method_exists($this,$function_to_call)){
+      	return call_user_method($function_to_call, $this);
+      }else{
+      	throw new MagicException("No such method {$column} on this object!");
+      }
+   }
 }
