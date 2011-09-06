@@ -1,6 +1,6 @@
 <?php 
 class MagicTranslate{
-	const languages = "german|french";
+	const languages = "Afrikaans|Albanian|Arabic|Belarusian|Bulgarian|Catalan|Chinese_Simplified|Chinese_Traditional|Croatian|Czech|Danish|Dutch|English|Estonian|Filipino|Finnish|French|Galician|German|Greek|Haitian_Creole|Hebrew|Hindi|Hungarian|Icelandic|Indonesian|Irish|Italian|Japanese|Latvian|Lithuanian|Macedonian|Malay|Maltese|Norwegian|Persian|Polish|Portuguese|Romanian|Russian|Serbian|Slovak|Slovenian|Spanish|Swahili|Swedish|Thai|Turkish|Ukrainian|Vietnamese|Welsh|Yiddish";
 	const GOOGLE_API_LOCATION = 'https://www.googleapis.com/language/translate/v2';
 	
 	static public function getTranslation($original){
@@ -13,7 +13,7 @@ class MagicTranslate{
 		}elseif(isset($_COOKIE['language'])){
 			$language = $_COOKIE['language'];
 		}else{
-			$language = 'english';
+			$language = 'English';
 		}
 		
 		/*
@@ -76,9 +76,9 @@ class MagicTranslate{
 				return 'bg';
 			case 'Catalan':
 				return 'ca';
-			case 'Chinese Simplified':
+			case 'Chinese_Simplified':
 				return 'zh-CN';
-			case 'Chinese Traditional':
+			case 'Chinese_Traditional':
 				return 'zh-TW';
 			case 'Croatian':
 				return 'hr';
@@ -104,7 +104,7 @@ class MagicTranslate{
 				return 'de';
 			case 'Greek':
 				return 'el';
-			case 'Haitian Creole':
+			case 'Haitian_Creole':
 				return 'ht';
 			case 'Hebrew':
 				return 'iw';
@@ -188,8 +188,11 @@ function t_smarty_block($params, $content, $template, &$repeat){
 	}
 }
 function t_smarty_modifier($content){
-	return t_wrap_span(MagicTranslate::getTranslation($content),$content);
+	return trans($content);
 }
 function t_wrap_span($translated,$content){
 	return '<dfn title="'.$content.'">'.$translated.'</dfn>';
+}
+function trans($content){
+	return t_wrap_span(MagicTranslate::getTranslation($content),$content);
 }

@@ -207,13 +207,159 @@ Translation:
   original:
     type: text
     length: -1
-  english:
+  Afrikaans:
     type: text
     length: -1
-  german:
+  Albanian:
     type: text
     length: -1
-  french:
+  Arabic:
     type: text
     length: -1
-  
+  Belarusian:
+    type: text
+    length: -1
+  Bulgarian:
+    type: text
+    length: -1
+  Catalan:
+    type: text
+    length: -1
+  Chinese_Simplified:
+    type: text
+    length: -1
+  Chinese_Traditional:
+    type: text
+    length: -1
+  Croatian:
+    type: text
+    length: -1
+  Czech:
+    type: text
+    length: -1
+  Danish:
+    type: text
+    length: -1
+  Dutch:
+    type: text
+    length: -1
+  English:
+    type: text
+    length: -1
+  Estonian:
+    type: text
+    length: -1
+  Filipino:
+    type: text
+    length: -1
+  Finnish:
+    type: text
+    length: -1
+  French:
+    type: text
+    length: -1
+  Galician:
+    type: text
+    length: -1
+  German:
+    type: text
+    length: -1
+  Greek:
+    type: text
+    length: -1
+  Haitian_Creole:
+    type: text
+    length: -1
+  Hebrew:
+    type: text
+    length: -1
+  Hindi:
+    type: text
+    length: -1
+  Hungarian:
+    type: text
+    length: -1
+  Icelandic:
+    type: text
+    length: -1
+  Indonesian:
+    type: text
+    length: -1
+  Irish:
+    type: text
+    length: -1
+  Italian:
+    type: text
+    length: -1
+  Japanese:
+    type: text
+    length: -1
+  Latvian:
+    type: text
+    length: -1
+  Lithuanian:
+    type: text
+    length: -1
+  Macedonian:
+    type: text
+    length: -1
+  Malay:
+    type: text
+    length: -1
+  Maltese:
+    type: text
+    length: -1
+  Norwegian:
+    type: text
+    length: -1
+  Persian:
+    type: text
+    length: -1
+  Polish:
+    type: text
+    length: -1
+  Portuguese:
+    type: text
+    length: -1
+  Romanian:
+    type: text
+    length: -1
+  Russian:
+    type: text
+    length: -1
+  Serbian:
+    type: text
+    length: -1
+  Slovak:
+    type: text
+    length: -1
+  Slovenian:
+    type: text
+    length: -1
+  Spanish:
+    type: text
+    length: -1
+  Swahili:
+    type: text
+    length: -1
+  Swedish:
+    type: text
+    length: -1
+  Thai:
+    type: text
+    length: -1
+  Turkish:
+    type: text
+    length: -1
+  Ukrainian:
+    type: text
+    length: -1
+  Vietnamese:
+    type: text
+    length: -1
+  Welsh:
+    type: text
+    length: -1
+  Yiddish:
+    type: text
+    length: -1
