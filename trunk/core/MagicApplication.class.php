@@ -238,7 +238,7 @@ class MagicApplication {
 			} else {
 				MagicLogger::log("No such Controller/Method: {$controller_to_call}->{$method_to_call}()!");
 				
-				throw new MagicException("Cannot find this page :(", "There is no method {$method} on controller {$controller}");
+				throw new MagicException("Cannot find this page :(", "There is no method {$method} ({$method_to_call}) on controller {$controller} ({$controller_to_call})");
 			}
 		} else {
 			$this->defaultAction();
