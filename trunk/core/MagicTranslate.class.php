@@ -48,13 +48,15 @@ class MagicTranslate{
 					"&source=" . "en" .
 					"&target=" . self::mapLanguageToCode($language)
 				);
+				echo " > '{$oMissingTranslation->get_original()}'";
 				$result = json_decode($scrape->html);
 				$translations = $result->data->translations;
 				if(strlen(trim($translations[0]->translatedText)) > 0){
 					call_user_method("set_{$language}", $oMissingTranslation, $translations[0]->translatedText);
-					echo " > {$oMissingTranslation->get_original()} = {$translations[0]->translatedText}\n";
+					echo " = {$translations[0]->translatedText}\n";
 					$oMissingTranslation->save();	
 				}else{
+					echo " [FAIL]\n";
 					print_r($result);
 				}
 			}
