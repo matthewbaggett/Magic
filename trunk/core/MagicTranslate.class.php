@@ -41,23 +41,25 @@ class MagicTranslate{
 			$oMissingTranslations = $oSearcher->execute();
 			echo "Processing ".count($oMissingTranslations)." missing {$language} translations\n";
 			foreach($oMissingTranslations as $oMissingTranslation){
-				$scrape = new Scrape(
-					self::GOOGLE_API_LOCATION . 
-					"?key=" . SettingController::get("GOOGLE_TRANSLATE_KEY") . 
-					"&q=" . urlencode($oMissingTranslation->get_original()) .
-					"&source=" . "en" .
-					"&target=" . self::mapLanguageToCode($language)
-				);
-				echo " > '{$oMissingTranslation->get_original()}'";
-				$result = json_decode($scrape->html);
-				$translations = $result->data->translations;
-				if(strlen(trim($translations[0]->translatedText)) > 0){
-					call_user_method("set_{$language}", $oMissingTranslation, $translations[0]->translatedText);
-					echo " = {$translations[0]->translatedText}\n";
-					$oMissingTranslation->save();	
-				}else{
-					echo " [FAIL]\n";
-					print_r($result);
+				if(strlen(trim($oMissingTranslation->get_original())) > 0){
+					$scrape = new Scrape(
+						self::GOOGLE_API_LOCATION . 
+						"?key=" . SettingController::get("GOOGLE_TRANSLATE_KEY") . 
+						"&q=" . urlencode($oMissingTranslation->get_original()) .
+						"&source=" . "en" .
+						"&target=" . self::mapLanguageToCode($language)
+					);
+					echo " > '{$oMissingTranslation->get_original()}'";
+					$result = json_decode($scrape->html);
+					$translations = $result->data->translations;
+					if(strlen(trim($translations[0]->translatedText)) > 0){
+						call_user_method("set_{$language}", $oMissingTranslation, $translations[0]->translatedText);
+						echo " = {$translations[0]->translatedText}\n";
+						$oMissingTranslation->save();	
+					}else{
+						echo " [FAIL]\n";
+						print_r($result);
+					}
 				}
 			}
 			echo "\n\n";
