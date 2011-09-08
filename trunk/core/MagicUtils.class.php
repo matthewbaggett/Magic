@@ -442,3 +442,8 @@ class MagicUtils
 	 }
     
 }
+
+
+function smarty_whereami($params,$smarty,$template){
+	return $template->getTemplateFilepath();
+}
