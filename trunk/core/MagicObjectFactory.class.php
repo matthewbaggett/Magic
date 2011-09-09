@@ -271,6 +271,7 @@
             } else {
                 return false;
             }
+            $files = array();
             while ($file = readdir($dir_handle)) {
                 if ($file != "." && $file != "..") {
                     if (!is_dir($sql_dir . "/" . $file)) {
