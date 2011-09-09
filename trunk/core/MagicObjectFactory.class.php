@@ -88,6 +88,7 @@
 					if (is_dir(ROOT . sprintf(MagicObjectFactory::OBJECT_GENERATION_POST_RUN_SCRIPTS, APPNAME))) {
 						$this->runSQL(ROOT . sprintf(MagicObjectFactory::OBJECT_GENERATION_POST_RUN_SCRIPTS, APPNAME));
 					}
+					$this->runKeys();
 				}
                 $use_data = MagicUtils::get_cli_flag("no-data") !== NULL?false:true;
                 if($use_data){
@@ -109,6 +110,23 @@
                 //MagicLogger::log("No need to regenerate");
                 return TRUE;
             }
+        }
+        
+        private function runKeys(){
+        	//print_r($this->object_map);
+        	MagicLogger::log("Adding keys...");
+        	foreach($this->object_map as $table_name => $columns){
+        		MagicLogger::log(" > Checking table '$table_name'");
+        		foreach($columns as $column_name => $properties){
+        			
+        			if(isset($properties['foreign'])){
+        				$sql = "ALTER TABLE `".Inflect::pluralize($table_name)."` ADD INDEX  `autokey_{$column_name}` (  `{$column_name}` )";
+        				MagicLogger::log("   > adding index autokey_{$column_name} to {$table_name} on column {$column_name}");
+        				DB::Query($sql);
+        			}
+        		}
+        	}
+        	//die("foo");
         }
 
         private function has_md5s_changed () {
