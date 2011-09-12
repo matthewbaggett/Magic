@@ -200,9 +200,9 @@ if (SettingSearcher::Factory()->search_by_system_name("LATE_LOAD_SCRIPTS")->coun
 /*
  * Available languages
  */
-if (SettingSearcher::Factory()->search_by_system_name("GOOGLE_TRANSLATE_KEY")->count() == 0) {
+if (SettingSearcher::Factory()->search_by_system_name("GOOGLE_API_KEY")->count() == 0) {
     Setting::Factory()
-            ->set_system_name("GOOGLE_TRANSLATE_KEY")
+            ->set_system_name("GOOGLE_API_KEY")
             ->set_public_name("API key for Google Translate")
             ->set_default_value('')
             ->set_value('')
