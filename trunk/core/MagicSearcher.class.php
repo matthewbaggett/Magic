@@ -57,7 +57,11 @@ class MagicSearcher {
     public function count ($column_to_count = 'id', $root_object_class = NULL) {
         $query = $this->build_selector($root_object_class);
         $query->addColumn("count({$column_to_count}) as freq");
-        $result = end($query->execute());
+        $results = $query->execute();
+        if($results === null){
+        	return 0;
+        }
+        $result = end($results);
         return $result->freq;
     }
 

@@ -90,6 +90,7 @@ class MagicApplicationConfiguration extends MagicSingleton
         define("DIR_APP", ROOT . "application/" . APPNAME);
         define("ROOT_APP", DIR_APP);
         define("DIR_TEMP", DIR_APP . "/temp");
+        define("DIR_LOG", DIR_APP . "/log");
         define("DIR_GEN", DIR_APP . "/gen");
 
         if(!file_exists(DIR_TEMP)){
@@ -100,7 +101,13 @@ class MagicApplicationConfiguration extends MagicSingleton
 
         if(!file_exists(DIR_GEN)){
             if(!mkdir(DIR_GEN, 0777, true)){
-                throw new exception("Wuhoh, there is no /gen directory at " . DIR_TEMP);
+                throw new exception("Wuhoh, there is no /gen directory at " . DIR_GEN);
+            }
+        }
+        
+   		if(!file_exists(DIR_LOG)){
+            if(!mkdir(DIR_LOG, 0777, true)){
+                throw new exception("Wuhoh, there is no /log directory at " . DIR_LOG);
             }
         }
 
