@@ -44,7 +44,7 @@ class MagicTranslate{
 				if(strlen(trim($oMissingTranslation->get_original())) > 0){
 					$scrape = new Scrape(
 						self::GOOGLE_API_LOCATION . 
-						"?key=" . SettingController::get("GOOGLE_API_KEY") . 
+						"?key=" . SettingController::get("GOOGLE_TRANSLATE_KEY") . 
 						"&q=" . urlencode($oMissingTranslation->get_original()) .
 						"&source=" . "en" .
 						"&target=" . self::mapLanguageToCode($language)
