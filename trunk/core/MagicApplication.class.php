@@ -592,7 +592,13 @@ class MagicApplication {
 		}
 	}
 
-
+	public function cronCompleteTaskAction(){
+		$mail = Mail::Factory()
+			->set_to("matthew@baggett.me")
+			->set_subject(APPNAME . " nightly cron complete")
+			->set_message(APPNAME . " nightly cron complete")
+			->send();
+	}
 
 	static public function exception_handler_web(Exception $e, $no_cli = false) {
 		if (!$no_cli) {
