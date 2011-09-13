@@ -138,18 +138,19 @@
         
         private function runKeys(){
         	//print_r($this->object_map);
-        	MagicLogger::log("Adding keys...");
-        	foreach($this->object_map as $table_name => $columns){
-        		MagicLogger::log(" > Checking table '$table_name'");
-        		foreach($columns as $column_name => $properties){
-        			
-        			if(isset($properties['foreign'])){
-        				$sql = "ALTER TABLE `".Inflect::pluralize($table_name)."` ADD INDEX  `autokey_{$column_name}` (  `{$column_name}` )";
-        				MagicLogger::log("   > adding index autokey_{$column_name} to {$table_name} on column {$column_name}");
-        				DB::Query($sql);
-        			}
-        		}
-        	}
+        	//MagicLogger::log("Adding keys...");
+        	//foreach($this->object_map as $table_name => $columns){
+        	//	MagicLogger::log(" > Checking table '$table_name'");
+        	//	foreach($columns as $column_name => $properties){
+        	//		
+        	//		if(isset($properties['foreign'])){
+        	//			$sql = "ALTER TABLE `".Inflect::pluralize($table_name)."` ADD INDEX  `autokey_{$column_name}` (  `{$column_name}` )";
+        	//			MagicLogger::log("   > adding index autokey_{$column_name} to {$table_name} on column {$column_name}");
+        	//			DB::Query($sql);
+        	//		}
+        	//	}
+        	//}
+        	
         	//die("foo");
         }
 

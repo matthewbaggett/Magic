@@ -1,6 +1,7 @@
 <?php 
 	$number_of_variables = count($this->definition);
 	$table_name = Inflect::pluralize($this->name);
+	$mof = new MagicObjectFactory();
 ?>
 -- ALTER definition for <?=$this->name?>.
 -- Table name is <?=$table_name?>.
@@ -87,3 +88,31 @@
 ?>
 ALTER TABLE `<?=$table_name?>` CHANGE  `<?=$variable_name?>`  `<?=$variable_name?>` <?=$type_string?> <?=$is_null?> <?=$auto_increment?>;
 <?php } ?>
+
+<?php 
+// Get the existing keys.
+$raw_existing_keys = DB::Query("SHOW INDEXES FROM {$table_name}");
+foreach($raw_existing_keys as $existing_key){
+	$existing_keys[] = $existing_key->Column_name;
+}
+unset($raw_existing_keys);
+
+// Try adding keys
+foreach($this->definition as $column_name => $properties){
+	if(isset($properties['foreign'])){
+		
+		// Detect local key... If not existing, add.
+		if(!in_array($column_name, $existing_keys)){
+			$key_name = "autokey_{$column_name}";
+			MagicLogger::log(" > Local key: $key_name ");
+			echo "ALTER TABLE `{$table_name}` ADD INDEX  `{$key_name}` (  `{$column_name}` );\n";
+		}
+		
+		// Add foreign key
+		$bits = explode(".",$properties['foreign'],2);
+		$foreign_table = Inflect::pluralize($bits[0]);
+		$foreign_column = $bits[1];
+		echo "ALTER TABLE `{$table_name}` ADD FOREIGN KEY (  `{$column_name}` ) REFERENCES  `{$foreign_table}` (`{$foreign_column}`) ON DELETE NO ACTION ON UPDATE NO ACTION;\n";
+	}
+}
+echo "\n";
