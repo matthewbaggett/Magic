@@ -50,6 +50,9 @@
 				break;
 			case 'enum':
 				$type_string = "ENUM('" . implode("','",$definition['enum']) . "')";
+				if(isset($definition['default'])){
+					$default = "DEFAULT '{$definition['default']}'";
+				}
 				break;
 			case 'timestamp':
 				$timestamp_length = strlen(time());
@@ -86,7 +89,7 @@
 		}
 		
 ?>
-ALTER TABLE `<?=$table_name?>` CHANGE  `<?=$variable_name?>`  `<?=$variable_name?>` <?=$type_string?> <?=$is_null?> <?=$auto_increment?>;
+ALTER TABLE `<?=$table_name?>` CHANGE  `<?=$variable_name?>`  `<?=$variable_name?>` <?=$type_string?> <?=$is_null?> <?=$default?> <?=$auto_increment?>;
 <?php } ?>
 
 <?php 
