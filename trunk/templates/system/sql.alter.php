@@ -16,6 +16,8 @@
 			$definition = $this->objectmap[$bits[0]][$bits[1]];
             unset($definition['key']);
 		}
+
+		$default = '';
 		
 		switch($definition['type']){
 			case 'integer':
@@ -26,13 +28,15 @@
 					$type_string = "INT";
 				}
 				break;
+				
 			case 'decimal':
 				if(isset($definition['decimal'])){
 					$type_string = "DECIMAL ( {$definition['decimal']} )";
 				}else{
 					throw exception("DECIMAL specified without parameters.");
 				}
-				break;				
+				break;	
+							
 			case 'text':
 				switch($definition['length']){
 					case -1:
@@ -45,30 +49,37 @@
 						$type_string = "VARCHAR( 1024 )";
 				}
 				break;
+				
 			case 'email':
 				$type_string = "VARCHAR( 320 )";
 				break;
+				
 			case 'enum':
-				$type_string = "ENUM('" . implode("','",$definition['enum']) . "')";
+				$type_string = "ENUM('" . implode("', '",$definition['enum']) . "')";
 				if(isset($definition['default'])){
 					$default = "DEFAULT '{$definition['default']}'";
 				}
 				break;
+				
 			case 'timestamp':
 				$timestamp_length = strlen(time());
 				$type_string = "INT({$timestamp_length})";
 				break;
+				
 			case 'money':
 				$type_string = "DECIMAL(10,4)";
 				break;
+				
             case "uuid":
                 $uuid_length = strlen(UUID::v4());
                 $type_string = "VARCHAR( {$uuid_length} )";
                 break;
+                
 			case 'hash':
 				$hash_length = strlen(hash("SHA1","test"));
 				$type_string = "VARCHAR( {$hash_length} )";
 				break;
+				
 			default:
 				$type_string = "VARCHAR(512)";
 				
