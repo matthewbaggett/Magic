@@ -48,7 +48,7 @@
 				$type_string = "INT({$timestamp_length})";
 				break;
 			case 'money':
-				$type_string = "DECIMAL(10,2)";
+				$type_string = "DECIMAL(10,4)";
 				break;
             case "uuid":
                 $uuid_length = strlen(UUID::v4());
