@@ -154,6 +154,7 @@ class MagicApplication {
 	public function __construct() {
 		// Do initialisation stuffs
 		if(PHP_SAPI != 'cli'){
+			session_set_cookie_params(2419200,"/");
 			session_start();
 			set_time_limit(90);
 		}else{
