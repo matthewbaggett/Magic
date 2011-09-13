@@ -86,7 +86,7 @@ UserPrivilege:
   user_id:
     foreign: User.id
   priviledge_id:
-    foreign: Priviledge.id
+    foreign: Privilege.id
 
 UserSetting:
   id:
@@ -104,7 +104,7 @@ UserSetting:
     type: text
     length: 512
 
-Prividge:
+Privilege:
   id:
     key: true
     type: integer
