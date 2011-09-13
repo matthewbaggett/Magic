@@ -47,6 +47,9 @@
 				$timestamp_length = strlen(time());
 				$type_string = "INT({$timestamp_length})";
 				break;
+			case 'money':
+				$type_string = "DECIMAL(10,2)";
+				break;
             case "uuid":
                 $uuid_length = strlen(UUID::v4());
                 $type_string = "VARCHAR( {$uuid_length} )";

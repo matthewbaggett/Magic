@@ -54,6 +54,7 @@ class MagicPagePainter extends MagicSingleton {
       
       $this->smarty->registerPlugin("block","t", "t_smarty_block");
       $this->smarty->registerPlugin("modifier","translate", "t_smarty_modifier");
+      $this->smarty->registerPlugin("modifier","pluralize", array("Inflect","pluralize"));
       $this->smarty->registerPlugin("function","whereami", "smarty_whereami");
       
       

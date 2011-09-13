@@ -92,10 +92,34 @@
 				}
                 $use_data = MagicUtils::get_cli_flag("no-data") !== NULL?false:true;
                 if($use_data){
+                	// check ROOT/data
                     $listing = MagicUtils::get_directory_list(ROOT . "/data");
+                    // check ROOT/application/YOURAPP/data
                     $app_listing = MagicUtils::get_directory_list(ROOT ."/application/".APPNAME."/data");
+
+                    // check the plugins! ROOT/plugins/PLUGIN_NAME/data
+                    foreach(Application::$config->raw['Plugins'] as $plugin_name => $config){
+                    	if($config['enabled'] != FALSE){
+                    		$plugin_paths[] = ROOT . "/plugins/{$plugin_name}/data";
+                    	}	
+                    }
+                    foreach($plugin_paths as $plugin_path){
+                    	if(file_exists($plugin_path)){
+                    		$plugin_listing = MagicUtils::get_directory_list($plugin_path);
+                    		sort($plugin_listing);
+                    		$plugin_listings[] = $plugin_listing;
+                    	}
+                    	
+                    }
+                    
+                    // Sort them
                     sort($listing); sort($app_listing);
+                    
+                    // Merge it all together
                     $listing = array_merge((array) $listing, (array) $app_listing);
+                	foreach($plugin_listings as $plugin_listing){
+                    	$listing = array_merge((array) $listing, $plugin_listing);	
+                    }
                     foreach($listing as $file){
                         MagicLogger::log("Running datafile: $file");
                         include_once($file);

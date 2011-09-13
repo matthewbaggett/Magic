@@ -8,6 +8,7 @@
 
 class <?=$this->name?>BaseObject extends MagicObject implements <?=$this->name?>Interface, MagicObjectImplementation {
 
+	const TABLE = "<?=Inflect::pluralize($this->name)?>";
     protected $_table = "<?=Inflect::pluralize($this->name)?>";
     protected $_class = "<?=$this->name?>";
     protected $_logs = NULL;
@@ -98,6 +99,14 @@ class <?=$this->name?>BaseObject extends MagicObject implements <?=$this->name?>
    public function __construct(){
         $this->_logs = array();
         parent::__construct();
+   }
+   
+   /**
+    * Throw back the Application Schema for <?=$this->name?>. 
+    * @return Array 
+    */
+   static public function Schema(){
+      return Application::$schema['<?=$this->name?>'];
    }
 
    <?php
