@@ -25,6 +25,13 @@
 					$type_string = "INT";
 				}
 				break;
+			case 'decimal':
+				if(isset($definition['decimal'])){
+					$type_string = "DECIMAL ( {$definition['decimal']} )";
+				}else{
+					throw exception("DECIMAL specified without parameters.");
+				}
+				break;				
 			case 'text':
 				switch($definition['length']){
 					case -1:
