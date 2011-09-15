@@ -38,6 +38,7 @@ class MagicPagePainter extends MagicSingleton {
 
       $this->smarty->cache_lifetime = 300;
       $this->smarty->caching = Smarty::CACHING_LIFETIME_CURRENT;
+      $this->smarty->caching = Smarty::CACHING_OFF;
       
       $this->smarty->debugging = FALSE;
       if($_SERVER['REMOTE_ADDR'] == '127.0.0.1'){
@@ -56,7 +57,7 @@ class MagicPagePainter extends MagicSingleton {
       $this->smarty->registerPlugin("modifier","translate", "t_smarty_modifier");
       $this->smarty->registerPlugin("modifier","pluralize", array("Inflect","pluralize"));
       $this->smarty->registerPlugin("function","whereami", "smarty_whereami");
-      
+      $this->smarty->registerPlugin("modifier","transform_xslt",array("MagicXSLT","smarty_transform"));
       
    }
 
