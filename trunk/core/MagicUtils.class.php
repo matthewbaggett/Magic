@@ -223,15 +223,17 @@ class MagicUtils
     static public function sort_objects(Array &$objects, $prop = "id", $direction = "DESC")
     {
         {
-            return usort($objects, function($a, $b) use ($prop, $direction)
-                {
+            return usort(
+            	$objects, 
+            	function($a, $b) use ($prop, $direction){
                     $call = "get_{$prop}";
                     if ($direction == "DESC") {
                         return $a->$call() < $b->$call() ? 1 : -1;
                     } else {
                         return $a->$call() > $b->$call() ? 1 : -1;
                     }
-                });
+                }
+            );
         }
     }
 
@@ -299,10 +301,12 @@ class MagicUtils
     static public function faerie($message, $action = "magic", $mood = "friendly")
     {
         $action = explode(" ", $action);
-        array_walk($action, function(&$item, $key)
-            {
+        array_walk(
+        	$action, 
+        	function(&$item, $key){
                 $item = ucfirst($item);
-            });
+            }
+        );
         $action = implode(" ", $action);
 
         $message = explode("\n", $message);
@@ -447,3 +451,39 @@ class MagicUtils
 function smarty_whereami($params,$smarty,$template){
 	return $template->getTemplateFilepath();
 }
+
+function deleteAll($directory, $empty = false) { 
+    if(substr($directory,-1) == "/") { 
+        $directory = substr($directory,0,-1); 
+    } 
+
+    if(!file_exists($directory) || !is_dir($directory)) { 
+        return false; 
+    } elseif(!is_readable($directory)) { 
+        return false; 
+    } else { 
+        $directoryHandle = opendir($directory); 
+        
+        while ($contents = readdir($directoryHandle)) { 
+            if($contents != '.' && $contents != '..') { 
+                $path = $directory . "/" . $contents; 
+                
+                if(is_dir($path)) { 
+                    deleteAll($path); 
+                } else { 
+                    unlink($path); 
+                } 
+            } 
+        } 
+        
+        closedir($directoryHandle); 
+
+        if($empty == false) { 
+            if(!rmdir($directory)) { 
+                return false; 
+            } 
+        } 
+        
+        return true; 
+    } 
+} 

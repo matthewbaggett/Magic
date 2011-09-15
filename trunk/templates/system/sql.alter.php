@@ -105,7 +105,8 @@ ALTER TABLE `<?=$table_name?>` CHANGE  `<?=$variable_name?>`  `<?=$variable_name
 
 <?php 
 // Get the existing keys.
-$raw_existing_keys = DB::Query("SHOW INDEXES FROM {$table_name}");
+$raw_existing_keys = (array) DB::Query("SHOW INDEXES FROM {$table_name}");
+$existing_keys = array();
 foreach($raw_existing_keys as $existing_key){
 	$existing_keys[] = $existing_key->Column_name;
 }

@@ -44,7 +44,10 @@
 
             //Sort the map by key
             ksort($this->object_map);
-
+            
+            //Sometimes, a '0' object sneaks in due to somewhat dodgy object.definition.yml files.. NEVER AGAIN.
+            unset($this->object_map['0']);
+            
             //List all the builder files
             $this->object_builders["controller.app.gen.php"]         = "php/%sAppController.class.php";
             $this->object_builders["controller.core.gen.php"]        = "php/%sCoreController.class.php";
@@ -258,30 +261,14 @@
         }
 
         private function destroy_current_object_files () {
-            return $this->delete_directory(ROOT . "/gen");
+            $this->delete_directory(DIR_APP . "/gen/php");
+            $this->delete_directory(DIR_APP . "/gen/sql");
+            return;
         }
 
-        private function delete_directory ($dirname) {
-            if (is_dir($dirname)) {
-                $dir_handle = opendir($dirname);
-            }
-            if (isset($dir_handle)) {
-                if (!$dir_handle) {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-            while ($file = readdir($dir_handle)) {
-                if ($file != "." && $file != "..") {
-                    if (!is_dir($dirname . "/" . $file)) unlink($dirname . "/" . $file); else
-                        $this->delete_directory($dirname . '/' . $file);
-                }
-            }
-            closedir($dir_handle);
-            rmdir($dirname);
-            return true;
-        }
+        private function delete_directory ($directory, $empty = false) { 
+		    return deleteAll($directory,$empty);
+	    } 
 
         public function runSQL ($sql_dir) {
             if (is_dir($sql_dir)) {

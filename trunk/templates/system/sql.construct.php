@@ -20,3 +20,5 @@ foreach($this->definition as $variable_name => $definition) {
 // Clean up the construction column 
 DB::Query("ALTER TABLE `<?=$table_name?>` DROP `DELETE_COLUMN`"); 
 ?> 
+
+ALTER TABLE `Pages` DROP `DELETE_COLUMN`; 
