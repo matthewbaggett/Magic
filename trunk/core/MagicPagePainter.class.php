@@ -17,10 +17,20 @@ class MagicPagePainter extends MagicSingleton {
    public function init() {
    	  // print_r($_SERVER); die();
       $this->init_run = true;
+      
+      //Clean up rediculous paths to be more sensible.
+      $sanitised_path = $_SERVER['REQUEST_URI'];
+      $sanitised_path = urldecode($sanitised_path);
+      $sanitised_path = str_replace("/","|",$sanitised_path);
+	  $sanitised_path = substr($sanitised_path, 0,255);
+      
+	  //Populate smarty file locations
       $this->smarty_file_locations['templates'] = DIR_APP . "/template";
       $this->smarty_file_locations['compiled'] = DIR_TEMP . "/smarty/compiled";
-      $this->smarty_file_locations['cache'] = DIR_TEMP . "/smarty/cache/" . $_SERVER['REQUEST_URI'] ."/";
+      $this->smarty_file_locations['cache'] = DIR_TEMP . "/smarty/cache/" . $sanitised_path."/";
       $this->smarty_file_locations['configuration'] = DIR_TEMP . "/smarty/configuration";
+      
+      //Make it so they all exist
       foreach ($this->smarty_file_locations as $name => $file_location) {
          if (!file_exists($file_location)) {
             $mkdir_state = @mkdir($file_location, 0777, true);
@@ -29,7 +39,10 @@ class MagicPagePainter extends MagicSingleton {
             }
          }
       }
+      
       parent::init();
+      
+      //Fire up the smarty! OR release the kraken
       $this->smarty = new Smarty();
       $this->smarty->setTemplateDir($this->smarty_file_locations['templates']);
       $this->smarty->setCompileDir($this->smarty_file_locations['compiled']);

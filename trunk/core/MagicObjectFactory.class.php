@@ -106,6 +106,7 @@
                     		$plugin_paths[] = ROOT . "/plugins/{$plugin_name}/data";
                     	}	
                     }
+                    $plugin_listings = array();
                     foreach($plugin_paths as $plugin_path){
                     	if(file_exists($plugin_path)){
                     		$plugin_listing = MagicUtils::get_directory_list($plugin_path);
