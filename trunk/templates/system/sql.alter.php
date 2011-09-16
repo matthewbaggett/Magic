@@ -6,6 +6,8 @@
 -- ALTER definition for <?=$this->name?>.
 -- Table name is <?=$table_name?>.
 <? //print_r($this->definition); ?>
+
+
 <?php 
 	foreach($this->definition as $variable_name => $definition) {
 		$i++; 
