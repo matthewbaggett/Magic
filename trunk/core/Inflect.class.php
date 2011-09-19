@@ -101,7 +101,6 @@
 			'information',
 			'equipment'
 		);
-
 		public static function pluralize ($original_string)
 		{
 			$string = $original_string;

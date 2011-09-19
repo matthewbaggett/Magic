@@ -75,6 +75,9 @@ class MagicUtils
 		return true;
 	}
 
+	static public function widget_select($params, $content, Smarty_Internal_Template $template, &$repeat){
+		return print_r($params);
+	}
 	/**
 	 * Display fuzzy time. IE: "One week ago"
 	 */

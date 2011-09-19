@@ -202,4 +202,16 @@
        public function get_object(){
          return $this;
       }
+      
+      public function variable_is_foreign_key($variable){
+      	$method = "get_parent_".strtolower(Inflect::pluralize($variable))."_options";
+      	echo "Is $variable a foreign key? ($method) ";
+      	if(method_exists($this,$method)){
+      		echo "yes. ";
+      		return TRUE;
+      	}else{
+      		echo "no. ";
+      		return FALSE;
+      	}
+      }
     }

@@ -115,6 +115,7 @@ class <?=$this->name?>BaseObject extends MagicObject implements <?=$this->name?>
 	 */
 	foreach($this->definition as $variable_name => $definition){
    ?>
+      
    public function get_<?=$variable_name?>() {
       <? if($definition['serialize']){ ?>
          return MagicUtils::unserialize($this-><?=$definition['type']?>_<?=$variable_name?>);
@@ -409,6 +410,14 @@ class <?=$this->name?>BaseObject extends MagicObject implements <?=$this->name?>
                 ->execute();
         return (array) $result;
     }
+    
+    /**
+     * Does this item have any parent <?=$object_name?> objects to pick from?
+     * @return Boolean
+     */
+    public function get_parent_<?=Inflect::pluralize(strtolower($foreign_class))?>_options(){
+    	return <?=$foreign_class?>Searcher::Factory()->execute();
+    }
 
 <?php
         }
@@ -469,12 +478,22 @@ class <?=$this->name?>BaseObject extends MagicObject implements <?=$this->name?>
       public function get_child_<?=Inflect::singularize($object_name_for_getter)?>($sort = NULL){
            return end(array_reverse($this->get_child_<?=$object_name_for_getter?>($sort)));
       }
+      
+    /**
+     * Does this item have any child <?=$object_name?> objects?
+     * @return Boolean
+     */
+    public function get_child_<?=$object_name_for_getter?>_options(){
+    	return <?=$object_name?>Searcher::Factory()->execute();
+    }
                     <?
                 }
             }
         }
 
     }
+    
+    
 ?>
 
 }
