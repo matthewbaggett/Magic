@@ -71,7 +71,7 @@ class MagicPagePainter extends MagicSingleton {
       $this->smarty->registerPlugin("modifier","pluralize", array("Inflect","pluralize"));
       $this->smarty->registerPlugin("function","whereami", "smarty_whereami");
       $this->smarty->registerPlugin("modifier","transform_xslt",array("MagicXSLT","smarty_transform"));
-      $this->smarty->registerPlugin("block","select",array("MagicUtils","widget_select"));
+      $this->smarty->registerPlugin("block","select",array("MagicFormWidgets","widget_select"));
       
    }
 
