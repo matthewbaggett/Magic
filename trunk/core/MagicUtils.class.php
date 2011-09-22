@@ -330,6 +330,10 @@ class MagicUtils
 
         return implode("\n", $response_lines) . "\n";
     }
+    
+    static public function tableHasKey($table,$key){
+    	return TRUE;
+    }
 
     static public function get_cli_flags($argv = null)
     {

@@ -108,13 +108,12 @@ foreach($this->definition as $variable_name => $definition) {
 	//Process keys
 	DB::Query( "ALTER TABLE  `{$table_name}` ADD  `{$variable_name}` INT NOT NULL ;\n");
 	if($definition['key']){
-		DB::Query( "ALTER TABLE `$table_name` ADD PRIMARY KEY (  `$variable_name` ) ; \n");
+		if(!MagicUtils::tableHasKey($table_name,$variable_name)){
+			DB::Query( "ALTER TABLE `$table_name` ADD PRIMARY KEY (  `$variable_name` ) ; \n");
+		}
 	}
 }
 
 // Clean up the construction column 
 DB::Query("ALTER TABLE `<?=$table_name?>` DROP `DELETE_COLUMN`"); 
 ?> 
-ALTER TABLE  `<?=$table_name?>` ADD PRIMARY KEY (  `id` );
-
-ALTER TABLE `<?=$table_name?>` DROP `DELETE_COLUMN`; 
