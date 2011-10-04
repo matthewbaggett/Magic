@@ -32,4 +32,13 @@ class SettingCoreController extends SettingBaseController {
 			return null;
 		}
 	}
+	static public function set($name,$value){
+		$setting = SettingSearcher::Factory()->search_by_system_name($name)->execute_one();
+		if($setting != null){
+			$setting->set_value($value)
+			return TRUE;
+		}else{
+			return FALSE;
+		}
+	}
 }
