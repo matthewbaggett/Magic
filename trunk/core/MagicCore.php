@@ -8,6 +8,7 @@ require_once(ROOT . "lib/firephp/fb.php");
 require_once(ROOT . "lib/krumo/class.krumo.php");
 require_once(ROOT . "lib/spyc/spyc.php");
 require_once(ROOT . "lib/smarty/Smarty.class.php");
+require_once(ROOT . "lib/lesscssphp/lessc.inc.php");
 
 require_once(ROOT . "core/MagicDefines.php");
 require_once(ROOT . "core/MagicApplication.class.php");
